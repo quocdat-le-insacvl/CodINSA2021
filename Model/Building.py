@@ -1,7 +1,7 @@
 class Building:
 
     def __init__(self, pos, building_type):
-        self.pos = pos 
+        self.pos = pos
         self.building_type = building_type
         if building_type == "S":
             self.can_attack = False

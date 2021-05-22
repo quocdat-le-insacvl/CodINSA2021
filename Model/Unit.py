@@ -1,8 +1,8 @@
 class Unit:
 
     def __init__(self, pos, unit_type):
-        self.unit_type = unit_type
         self.pos = pos
+        self.unit_type = unit_type
         if unit_type == "V":
             self.price = 20
             self.life = 20

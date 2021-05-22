@@ -5,12 +5,19 @@ class View:
     def __init__(self):
         pass
 
-    def convert_map(self, data):
-        game_map = []
-        rows = data["map"].splitlines()
-        for i in range(len(rows)):
-            mapped_line = []
-            split_line = rows[i].split(" ")
-            for j in range(len(split_line)):
-                mapped_line.append([math.floor(j / 2), i, bool(j % 2)])
-            game_map.append(mapped_line)
+    @staticmethod
+    def convert_map(grid):
+        for line in grid:
+            for row in line:
+                for case in row:
+                    print(case.tiles_type, end="")
+                    if case.building is not None:
+                        print(case.building.building_type, end="")
+                    elif case.unit is not None:
+                        print(case.unit.unit_type, end="")
+                    if case.owned == True:
+                        print(1, end="")
+                    elif case.owned == False:
+                        print(2, end="")
+                    print(" ", end="")
+            print()

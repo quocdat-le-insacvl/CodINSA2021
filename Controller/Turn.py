@@ -23,11 +23,11 @@ class Turn:
     def mine(self, pos, *dests):
         self.mines[pos_to_str(pos)] = [[dest[0], dest[1], bool(dest[2])] for dest in dests]
 
-    def build(self, pos, dest, building: Building):
-        self.builds[pos_to_str(pos)] = [[dest[0], dest[1], bool(dest[2])], building.get_letter()]
+    def build(self, pos, dest, type):
+        self.builds[pos_to_str(pos)] = [[dest[0], dest[1], bool(dest[2])], type]
 
-    def summon(self, pos, unit: Unit):
-        self.summons[pos_to_str(pos)] = unit.get_letter()
+    def summon(self, pos, type):
+        self.summons[pos_to_str(pos)] = type
 
     def send(self, sock, token):
         data = json.dumps({

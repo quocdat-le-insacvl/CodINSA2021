@@ -5,6 +5,7 @@ import requests
 
 from Controller.Turn import Turn
 from Model.Game import Game
+from Model.Unit import Unit
 from View.View import View
 
 
@@ -36,20 +37,22 @@ class Controller:
             sock.connect((self.host, self.game.port))
             flag = True
             while flag:
-                    data = sock.recv(1024)
-                    if data is not None:
-                        data = json.loads(data.decode("UTF-8"))
+                data = sock.recv(20480)
+                if data is not None:
+                    data = json.loads(data.decode("UTF-8"))
 
-                        """ Début du jeu """
-                        if "game" in data and data["game"] == "begin":
-                            self.game.init(data)
-                        else:
-                            # Analyse data receive
-                            pass
-                            # self.game.analyse(data)
+                    """ Début du jeu """
+                    if "game" in data and data["game"] == "begin":
+                        self.game.init(data)
+                    else:
+                        # Analyse data receive
+                        pass
+                        # self.game.analyse(data)
 
-                        if data["your_turn"]:
-                            turn = Turn()
+                    if data["your_turn"]:
+                        turn = Turn()
+                        turn.summon((self.game.spawn[0], self.game.spawn[1], 1), "V")
+                        turn.send(sock, self.game.password)
 
-                            turn.send(sock, self.game.password)
+                    View.convert_map(self.game.map.grid)
         self.game.leave_game()
