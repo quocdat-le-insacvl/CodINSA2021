@@ -2,6 +2,7 @@ import math
 
 from Model.Case import Case
 
+
 class Map:
 
     def __init__(self, json_map):
