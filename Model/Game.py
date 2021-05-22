@@ -26,7 +26,6 @@ class Game:
     def init_map(self, json_map):
         self.map = Map(json_map)
 
-
     def list_game(self):
         r = requests.get(self.url + "current", cookies=self.cookie)
         return r.json()["games"]

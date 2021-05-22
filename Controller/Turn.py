@@ -1,8 +1,8 @@
 import json
 
+from Controller.Util import pos_to_str
 from Model.Building import Building
 from Model.Unit import Unit
-from Utils import pos_to_str
 
 
 class Turn:
@@ -40,7 +40,6 @@ class Turn:
         })
         print(data)
         socket.send((data + "\n").encode())
-
 
 # if __name__ == '__main__':
 #     turn = Turn()
