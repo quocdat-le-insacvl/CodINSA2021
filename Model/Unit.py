@@ -4,7 +4,7 @@ class Unit:
         self.pos_building_spawn = pos_building_spawn
         self.unit_type = unit_type
         self.pos = pos
-        if unite_type == "V":
+        if unit_type == "V":
             self.price = 20
             self.life = 20
             self.attack = 10

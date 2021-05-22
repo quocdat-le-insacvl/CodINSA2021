@@ -21,7 +21,6 @@ class Game:
             "ai": AItype,
         }
         r = requests.get(self.url + "game/new", data, cookies=self.cookie)
-        print(r.json())
         return r.json()
 
     def init_map(self, json_map):

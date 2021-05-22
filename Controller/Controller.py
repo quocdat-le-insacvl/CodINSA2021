@@ -25,33 +25,34 @@ class Controller:
         r = requests.post(self.url + "init", json=data)
         return r.cookies
 
+    def send(self, sock, data):
+        sock.send((json.dumps(data) + "\n").encode())
+
+
     def run(self):
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            s.connect((self.host, self.game.port))
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+            sock.connect((self.host, self.game.port))
+            flag = True
             try:
-                while True:
-                    data = s.recv(1024)
+                while flag:
+                    data = sock.recv(1024)
                     if data is not None:
                         data = json.loads(data.decode("UTF-8"))
-                        print(data)
+
+                        """ Début du jeu """
                         if "game" in data and data["game"] == "begin":
                             self.game.init_map(data["map"])
-                            self.view.convert_map(data)
-                            game_spawn = data["spawn"]
-
-                        if "moved" in data:
-                            pass
 
                         if data["your_turn"]:
+                            # TODO: choisir une action
                             toSend = {
                                 'summon': {
                                     '[9,1,false]': 'V'
                                 },
                                 'token': self.game.password
                             }
-                            s.send((json.dumps(toSend) + "\n").encode())
-
-                    print("\n")
+                            # TODO: envoyer l'action choisie
+                            self.send(sock, toSend)
             except Exception as e:
                 print(str(e))
                 pass
