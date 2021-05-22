@@ -35,7 +35,7 @@ class Controller:
                         data = json.loads(data.decode("UTF-8"))
                         print(data)
                         if "game" in data and data["game"] == "begin":
-                            print(data["map"])
+                            self.game.init_map(data["map"])
                             self.view.convert_map(data)
                             game_spawn = data["spawn"]
 

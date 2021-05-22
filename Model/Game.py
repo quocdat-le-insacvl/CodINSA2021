@@ -1,5 +1,7 @@
 import requests
 
+from Model.Map import Map
+
 
 class Game:
 
@@ -12,6 +14,7 @@ class Game:
         self.port = game_info["port"]
         self.game_id = game_info["game_id"]
         self.password = game_info["password"]
+        self.map = None
 
     def create_AIgame(self, AItype):
         data = {
@@ -20,6 +23,10 @@ class Game:
         r = requests.get(self.url + "game/new", data, cookies=self.cookie)
         print(r.json())
         return r.json()
+
+    def init_map(self, json_map):
+        self.map = Map(json_map)
+
 
     def list_game(self):
         r = requests.get(self.url + "current", cookies=self.cookie)
