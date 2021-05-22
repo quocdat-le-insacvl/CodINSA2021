@@ -1,6 +1,6 @@
 class Unit:
 
-    def __init__(self, pos_spawn_building, pos, unit_type):
+    def __init__(self, pos_building_spawn, pos, unit_type):
         self.pos_building_spawn = pos_building_spawn
         self.unit_type = unit_type
         self.pos = pos
