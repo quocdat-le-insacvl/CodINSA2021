@@ -35,8 +35,7 @@ class Controller:
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
             sock.connect((self.host, self.game.port))
             flag = True
-            try:
-                while flag:
+            while flag:
                     data = sock.recv(1024)
                     if data is not None:
                         data = json.loads(data.decode("UTF-8"))
@@ -44,6 +43,8 @@ class Controller:
                         """ Début du jeu """
                         if "game" in data and data["game"] == "begin":
                             self.game.init(data)
+                            print(self.game.map.grid[1][8][1].pos)
+                            print(self.game.map.pathFinder(self.game.map.grid[1][8][1].pos, self.game.map.grid[10][8][1].pos))
                         else:
                             # Analyse data receive
                             self.game.analyse(data)
@@ -52,7 +53,4 @@ class Controller:
                             turn = Turn()
 
                             turn.send(sock, self.game.password)
-            except Exception as e:
-                print(str(e))
-                pass
         self.game.leave_game()
