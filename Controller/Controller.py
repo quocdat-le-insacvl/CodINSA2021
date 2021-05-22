@@ -5,6 +5,7 @@ import requests
 
 from Controller.Turn import Turn
 from Model.Game import Game
+from Model.Unit import Unit
 from View.View import View
 
 
@@ -30,27 +31,27 @@ class Controller:
     def send(self, sock, data):
         sock.send((json.dumps(data) + "\n").encode())
 
-
     def run(self):
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
             sock.connect((self.host, self.game.port))
             flag = True
             while flag:
-                    data = sock.recv(1024)
-                    if data is not None:
-                        data = json.loads(data.decode("UTF-8"))
+                data = sock.recv(20480)
+                if data is not None:
+                    data = json.loads(data.decode("UTF-8"))
 
-                        """ Début du jeu """
-                        if "game" in data and data["game"] == "begin":
-                            self.game.init(data)
-                            print(self.game.map.grid[1][8][1].pos)
-                            print(self.game.map.pathFinder(self.game.map.grid[1][8][1].pos, self.game.map.grid[10][8][1].pos))
-                        else:
-                            # Analyse data receive
-                            self.game.analyse(data)
+                    """ Début du jeu """
+                    if "game" in data and data["game"] == "begin":
+                        self.game.init(data)
+                        print(self.game.map.grid[1][8][1].pos)
+                        print(
+                            self.game.map.pathFinder(self.game.map.grid[1][8][1].pos, self.game.map.grid[10][8][1].pos))
+                    else:
+                        # Analyse data receive
+                        self.game.analyse(data)
 
-                        if data["your_turn"]:
-                            turn = Turn()
-
-                            turn.send(sock, self.game.password)
+                    if data["your_turn"]:
+                        turn = Turn()
+                        turn.summon(self.game.spawn, Unit(self.game.spawn, "V"))
+                        turn.send(sock, self.game.password)
         self.game.leave_game()

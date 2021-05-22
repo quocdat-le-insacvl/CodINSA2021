@@ -26,7 +26,6 @@ class Game:
         return r.json()
 
     def init(self, json):
-        print(json)
         self.spawn = (json["spawn"][0], json["spawn"][1], int(json["spawn"][2]))
         self.map = Map(json["map"], self.spawn)
 
