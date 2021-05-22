@@ -10,10 +10,11 @@ from View.View import View
 class Controller:
 
     def __init__(self):
+        self.ai_mode = "InactiveAI"
         self.url = "http://codinsa.insa-rennes.fr/"
         self.host = "codinsa.insa-rennes.fr"
         self.cookie = self.login()
-        self.game = Game(self.url, self.cookie)
+        self.game = Game(self.url, self.cookie, self.ai_mode)
         self.view = View()
         self.run()
 

@@ -5,12 +5,12 @@ from Model.Map import Map
 
 class Game:
 
-    def __init__(self, url, cookie):
+    def __init__(self, url, cookie, ai_mode):
         self.url = url
         self.cookie = cookie
         for game in self.list_game():
             self.leave_game(game)
-        game_info = self.create_AIgame("InactiveAI")
+        game_info = self.create_AIgame(ai_mode)
         self.port = game_info["port"]
         self.game_id = game_info["game_id"]
         self.password = game_info["password"]
