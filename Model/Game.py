@@ -15,6 +15,7 @@ class Game:
         self.game_id = game_info["game_id"]
         self.password = game_info["password"]
         self.map = None
+        self.spawn = None
 
     def create_AIgame(self, AItype):
         data = {
@@ -23,8 +24,9 @@ class Game:
         r = requests.get(self.url + "game/new", data, cookies=self.cookie)
         return r.json()
 
-    def init_map(self, json_map):
-        self.map = Map(json_map)
+    def init(self, json):
+        self.map = Map(json["map"])
+        self.spawn = (json["spawn"][0], json["spawn"][1], int(json["spawn"][0]))
 
     def list_game(self):
         r = requests.get(self.url + "current", cookies=self.cookie)

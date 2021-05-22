@@ -3,6 +3,7 @@ import socket
 
 import requests
 
+from Controller.Turn import Turn
 from Model.Game import Game
 from View.View import View
 
@@ -20,8 +21,8 @@ class Controller:
 
     def login(self):
         data = {
-            "username": "CVL1",
-            "password": "+GC;GY8]dK1EYbS=ja*;U"
+            "username": "CVL3",
+            "password": ".WCX6_KO9<PVh-F9V@PmNlL?"
         }
         r = requests.post(self.url + "init", json=data)
         return r.cookies
@@ -42,18 +43,12 @@ class Controller:
 
                         """ Début du jeu """
                         if "game" in data and data["game"] == "begin":
-                            self.game.init_map(data["map"])
+                            self.game.init(data)
 
                         if data["your_turn"]:
-                            # TODO: choisir une action
-                            toSend = {
-                                'summon': {
-                                    '[9,1,false]': 'V'
-                                },
-                                'token': self.game.password
-                            }
-                            # TODO: envoyer l'action choisie
-                            self.send(sock, toSend)
+                            turn = Turn()
+
+                            turn.send(socket, self.game.password)
             except Exception as e:
                 print(str(e))
                 pass
