@@ -26,14 +26,16 @@ class Building:
             self.life = 120
             self.score_killed = 15
         else: 
-            assert("Error : Wrong building type!")
+            assert "Error : Wrong building type!"
 
     def __repr__(self):
-        return "type {0}; life {1}; price{2}".format(self.type, self.life, self.price)
+        return "type {0}; life {1}; price{2}".format(self.building_type, self.life, self.price)
 
     def __str__(self):
-        return "type {0}; life {1}; price{2}".format(self.type, self.life, self.price)
+        return "type {0}; life {1}; price{2}".format(self.building_type, self.life, self.price)
 
+    def get_letter(self):
+        return self.building_type
 
 
 

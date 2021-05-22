@@ -1,6 +1,6 @@
 class Unit:
 
-    def __init__(self, pos_spawn_building, pos, unit_type):
+    def __init__(self, pos_building_spawn, pos, unit_type):
         self.pos_building_spawn = pos_building_spawn
         self.unit_type = unit_type
         self.pos = pos
@@ -35,4 +35,5 @@ class Unit:
     def __repr__(self):
         return "Type:{0}; Cout:{1}; Point de vie: {2}; Point attaque : {3}; Point de mouvement: {4}; Point gagne si tue : {5}; Capacite: {6}; Batiment de formation : {7};Position de batiment attitre: {8} ".format(self.unit_type,self.price, self.life, self.attack, self.movement, self.score_killed, self.capability, self.spawn_building, self.pos_building_spawn);
 
-
+    def get_letter(self):
+        return self.unit_type
