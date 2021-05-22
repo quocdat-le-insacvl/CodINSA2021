@@ -48,7 +48,7 @@ class Controller:
                         if data["your_turn"]:
                             turn = Turn()
 
-                            turn.send(socket, self.game.password)
+                            turn.send(sock, self.game.password)
             except Exception as e:
                 print(str(e))
                 pass

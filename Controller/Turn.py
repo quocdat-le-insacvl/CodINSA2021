@@ -29,7 +29,7 @@ class Turn:
     def summon(self, pos, unit: Unit):
         self.summons[pos_to_str(pos)] = unit.get_letter()
 
-    def send(self, socket, token):
+    def send(self, sock, token):
         data = json.dumps({
             "move": self.moves,
             "attack": self.attacks,
@@ -39,7 +39,7 @@ class Turn:
             "token": token
         })
         print(data)
-        socket.send((data + "\n").encode())
+        sock.send((data + "\n").encode())
 
 # if __name__ == '__main__':
 #     turn = Turn()
