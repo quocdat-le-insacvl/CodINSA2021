@@ -1,13 +1,16 @@
 import math
 
+from Model.Building import Building
 from Model.Case import Case
+from View.View import View
+
 from Controller.Util import distance
 from Controller.Util import adjPos
 from Controller.Util import PriorityQueue
 
 class Map:
 
-    def __init__(self, json_map):
+    def __init__(self, json_map, spawn):
         rows = (json_map.splitlines())
         self.height = len(rows)
         self.grid = []
@@ -17,25 +20,20 @@ class Map:
             self.width = len(row)
             y_dimension = []
             i = 0
-            while i<len(row):
-                z_dimension = []
-                z_dimension.append(Case(row[i], (j, i//2, 0)))
-                z_dimension.append(Case(row[i+1], (j, i//2, 1)))
+            while i < len(row):
+                z_dimension = [Case(row[i], (j, i // 2, 0), None), Case(row[i + 1], (j, i // 2, 1), None)]
                 i += 2
                 y_dimension.append(z_dimension)
             self.grid.append(y_dimension)
             j += 1
-        print("test map : height + width == ", self.height, self.width)
-        for x in self.grid:
-            for y in x:
-                for z in y:
-                    print(z, end="/") 
-                print(" ", end="")
-            print()
-            
+
+        self.grid[spawn[1]][spawn[0]][spawn[2]].building = Building((spawn[0], spawn[1], spawn[2]), "S")
+        self.grid[spawn[1]][spawn[0]][spawn[2]].owned = True
+        View.convert_map(self.grid)
+
     def isValid(self, pos):
         return pos[0]>=0 and pos[0]<self.height and pos[1]>=0 and pos[1]<self.width and self.grid[pos[0]][pos[1]][pos[2]].tiles_type !="A" and self.grid[pos[0]][pos[1]][pos[2]].tiles_type !="R"
-  
+
     def pathFinder(self, start, finish):
         pile = PriorityQueue()
         visited = set()
