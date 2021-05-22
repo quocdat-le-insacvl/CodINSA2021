@@ -5,28 +5,28 @@ from Model.Map import Map
 
 class Game:
 
-    def __init__(self, url, cookie):
+    def __init__(self, url, cookie, ai_mode):
         self.url = url
         self.cookie = cookie
         for game in self.list_game():
             self.leave_game(game)
-        game_info = self.create_AIgame("InactiveAI")
+        game_info = self.create_AIgame(ai_mode)
         self.port = game_info["port"]
         self.game_id = game_info["game_id"]
         self.password = game_info["password"]
         self.map = None
+        self.spawn = None
 
     def create_AIgame(self, AItype):
         data = {
             "ai": AItype,
         }
         r = requests.get(self.url + "game/new", data, cookies=self.cookie)
-        print(r.json())
         return r.json()
 
-    def init_map(self, json_map):
-        self.map = Map(json_map)
-
+    def init(self, json):
+        self.map = Map(json["map"])
+        self.spawn = (json["spawn"][0], json["spawn"][1], int(json["spawn"][0]))
 
     def list_game(self):
         r = requests.get(self.url + "current", cookies=self.cookie)
