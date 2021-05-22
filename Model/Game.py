@@ -1,5 +1,6 @@
 import requests
 
+from Controller.Turn import Turn
 from Model.Map import Map
 
 
@@ -16,6 +17,7 @@ class Game:
         self.password = game_info["password"]
         self.map = None
         self.spawn = None
+        self.list_unit = []
 
     def create_AIgame(self, AItype):
         data = {
@@ -47,3 +49,9 @@ class Game:
         if game is None:
             game = self.game_id
         requests.delete(self.url + "game/" + game, cookies=self.cookie)
+
+    def new_turn(self):
+        turn = Turn()
+
+        if self.list_unit:
+            pass

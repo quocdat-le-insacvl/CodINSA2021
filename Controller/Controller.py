@@ -43,11 +43,10 @@ class Controller:
                         """ Début du jeu """
                         if "game" in data and data["game"] == "begin":
                             self.game.init(data)
-                            print(self.game.map.grid[1][8][1].pos)
-                            print(self.game.map.pathFinder(self.game.map.grid[1][8][1].pos, self.game.map.grid[10][8][1].pos))
                         else:
                             # Analyse data receive
-                            self.game.analyse(data)
+                            pass
+                            # self.game.analyse(data)
 
                         if data["your_turn"]:
                             turn = Turn()
