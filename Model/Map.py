@@ -9,6 +9,7 @@ class Map:
         rows = (json_map.splitlines())
         self.height = len(rows)
         self.grid = []
+        j = 0
         for row in rows:
             row = row.split(" ")
             self.width = len(row)
@@ -16,11 +17,12 @@ class Map:
             i = 0
             while i<len(row):
                 z_dimension = []
-                z_dimension.append(row[i])
-                z_dimension.append(row[i+1])
+                z_dimension.append(Case(row[i], (j, i//2, 0)))
+                z_dimension.append(Case(row[i+1], (j, i//2, 1)))
                 i += 2
                 y_dimension.append(z_dimension)
             self.grid.append(y_dimension)
+            j += 1
         print("test map : height + width == ", self.height, self.width)
         for x in self.grid:
             for y in x:

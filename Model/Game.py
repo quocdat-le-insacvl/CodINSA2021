@@ -28,6 +28,17 @@ class Game:
         self.map = Map(json["map"])
         self.spawn = (json["spawn"][0], json["spawn"][1], int(json["spawn"][0]))
 
+    def analyse(self, data):
+        print()
+        print()
+        print("-----------------------------------")
+        for key in data:
+            print(key , data[key])
+        print("-----------------------------------")
+        print()
+        print()
+        pass
+
     def list_game(self):
         r = requests.get(self.url + "current", cookies=self.cookie)
         return r.json()["games"]

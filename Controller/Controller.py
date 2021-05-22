@@ -44,6 +44,9 @@ class Controller:
                         """ Début du jeu """
                         if "game" in data and data["game"] == "begin":
                             self.game.init(data)
+                        else:
+                            # Analyse data receive
+                            self.game.analyse(data)
 
                         if data["your_turn"]:
                             turn = Turn()
