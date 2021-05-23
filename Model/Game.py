@@ -51,6 +51,9 @@ class Game:
                 self.map.grid[summoned[0][1]][summoned[0][0]][int(summoned[0][2])].unit = unit
         for killed in data["killed"]:
             pass
+        
+        # for visible in data["visible"]:
+
         self.balance = data["balance"]
         self.turn = data["turn"]
         # Check in case of error
@@ -66,6 +69,7 @@ class Game:
         for key in data:
             print(key, data[key])
         print("-----------------------------------")
+        print(self.map.list_unit)
         print()
         print()
 

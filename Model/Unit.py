@@ -32,10 +32,10 @@ class Unit:
             self.spawn_building = "Amphitheatre"
 
     def __str__(self):
-        return "Type:{0}; Cout:{1}; Point de vie: {2}; Point attaque : {3}; Point de mouvement: {4}; Point gagne si tue : {5}; Capacite: {6}; Batiment de formation : {7}".format(self.unit_type,self.price, self.life, self.attack, self.movement, self.score_killed, self.capability, self.spawn_building,)
+        return "Type:{0}-Pos{1}-Life{2}\n".format (self.unit_type, self.pos, self.life)
 
     def __repr__(self):
-        return "Type:{0}; Cout:{1}; Point de vie: {2}; Point attaque : {3}; Point de mouvement: {4}; Point gagne si tue : {5}; Capacite: {6}; Batiment de formation : {7}".format(self.unit_type,self.price, self.life, self.attack, self.movement, self.score_killed, self.capability, self.spawn_building)
+        return "Type:{0}-Pos{1}-Life{2}\n".format (self.unit_type, self.pos, self.life)
 
     def get_letter(self):
         return self.unit_type
