@@ -18,4 +18,4 @@ Villager = 'V'
 Tank = 'H'  # H for Heavy
 
 if __name__ == "__main__":
-    app = Controller(True, "CVL2", "b\\\\0ZgPJLU=3&#]L9k'l6", True, "CVL", None)
+    app = Controller(False, "CVL3", ".WCX6_KO9<PVh-F9V@PmNlL?", False, None, None)

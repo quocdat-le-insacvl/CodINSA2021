@@ -7,6 +7,7 @@ class Unit:
         self.pos = pos
         self.unit_type = unit_type
         self.isOwned = owned
+        self.focus = "Spawn"
         if unit_type == "V":
             self.price = 20
             self.life = 20

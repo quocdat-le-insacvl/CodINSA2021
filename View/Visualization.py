@@ -82,7 +82,8 @@ class Visualization:
                     self.DrawBar((x1 - 20, y1), (40, 10), PROGRESS, self.map.grid[j][i][0].building.life / self.map.grid[j][i][0].building.max_life)
                 if unit1 is not None:
                     unit1 = unit1.unit_type
-                    img = self.font.render(unit1, True, RED if self.map.grid[j][i][0].unit.isOwned else BLUE)
+                    # img = self.font.render(unit1, True, RED if self.map.grid[j][i][0].unit.isOwned else BLUE)
+                    img = self.font.render(unit1, True, BROWN if self.map.grid[j][i][0].unit.focus == "Mined" else BLUE)
                     self.screen.blit(img, (x1-offset_char + 1, y1-offset_char - 5))
                     self.DrawBar((x1 - 20, y1), (40, 10), PROGRESS,
                                  self.map.grid[j][i][0].unit.life / self.map.grid[j][i][0].unit.max_life)
@@ -109,7 +110,7 @@ class Visualization:
                                  self.map.grid[j][i][1].building.life / self.map.grid[j][i][1].building.max_life)
                 if unit2 is not None:
                     unit2 = unit2.unit_type
-                    img = self.font.render(unit2, True, RED if self.map.grid[j][i][1].unit.isOwned else BLUE)
+                    img = self.font.render(unit2, True, BROWN if self.map.grid[j][i][1].unit.focus == "Mined" else BLUE)
                     self.screen.blit(img, (x2-offset_char + 1,y2 - offset_char + 5))
                     self.DrawBar((x2 - 20, y2 - 9), (40, 10), PROGRESS,
                                  self.map.grid[j][i][1].unit.life / self.map.grid[j][i][1].unit.max_life)
