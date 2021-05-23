@@ -75,7 +75,6 @@ class Game:
         print("Enemy building: ")
         print(self.list_enemy_building)
 
-
     def analyse(self, data):
         try:
             for killed in data["killed"]:
@@ -100,6 +99,17 @@ class Game:
             pass
         for mined in data["mined"]:
             pass
+        for build in data["built"]:
+            # built [[[0, 17, True], [1, 17, False], 'C', False]]
+            if build[2] :
+                print("OK")
+                print("OK")
+                print("OK")
+                print("OK")
+                print("OK")
+                print("OK")
+                print("OK")
+
         for summoned in data["summoned"]:
             if summoned[2]:
                 unit = Unit(summoned[0], summoned[1], True)
@@ -232,7 +242,7 @@ class Game:
                             imax -= 1
 
                 unit.action_attack()
-                unit.build()
+                unit.build(self, turn)
                 unit.dig()
 
             possibility = find_nearby_enemy(self.map.grid, unit.pos)

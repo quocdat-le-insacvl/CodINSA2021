@@ -1,5 +1,6 @@
 import random
-
+from Controller.Util import *
+from Model.Building import Building
 
 class Unit:
 
@@ -66,8 +67,23 @@ class Unit:
     def action_attack(self):
         pass
 
-    def build(self):
-        pass
+    def build(self, game, turn):
+        list_adj = adjPos(self.pos)
+        print("List adj : ", list_adj)
+        d = ["C","T"]
+        c = [250, 70]
+        for pos in list_adj:
+            case = game.map.grid[pos[1]][pos[0]][pos[2]]
+            print(case.tiles_type)
+            if case.unit is not None: continue
+            if case.building is not None: continue
+            if case.tiles_type in ["F", "M"] and any([distance(pos, j.pos) for j in game.map.list_building]):
+                if game.balance > 1000:
+                    i = random.randrange(1)
+                    # game.map.list_building.append(Building(pos, d[i]))
+                    turn.build(self.pos, list(pos), d[i])
+                    game.balance -= c[i]
+                    print("Built!!!!", pos)
 
     def dig(self):
         pass
