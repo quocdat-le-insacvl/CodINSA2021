@@ -50,7 +50,7 @@ class Controller:
                         print(data)
                         print(str(E))
                         print("On a perdu!")
-                        break
+                        # break
 
 
                     """ Début du jeu """
