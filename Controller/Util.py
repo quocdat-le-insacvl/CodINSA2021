@@ -69,3 +69,41 @@ def adjPos(pos):
         list.append((pos[0], pos[1] + 1, 1))
         list.append((pos[0], pos[1], 1))
     return list
+
+
+def get_building_around(map, pos, type):
+    list = []
+    if pos[2]:
+        if map[pos[1]][pos[0] + 1][0].building == type:
+            list.append((pos[0] + 1, pos[1], 0))
+        if map[pos[1] - 1][pos[0]][0].building == type:
+            list.append((pos[0], pos[1] - 1, 0))
+        if map[pos[1]][pos[0] + 1][0].building == type:
+            list.append((pos[0], pos[1], 0))
+    else:
+        if map[pos[1]][pos[0] - 1][0].building == type:
+            list.append((pos[0] - 1, pos[1], 1))
+        if map[pos[1] + 1][pos[0]][0].building == type:
+            list.append((pos[0], pos[1] + 1, 1))
+        if map[pos[1]][pos[0]][0].building == type:
+            list.append((pos[0], pos[1], 1))
+    return list
+
+
+def get_tile_around(grid, pos, type):
+    list = []
+    if pos[2]:
+        if grid[pos[1]][pos[0] + 1][0].tiles_type == type:
+            list.append((pos[0] + 1, pos[1], 0))
+        if grid[pos[1] - 1][pos[0]][0].tiles_type == type:
+            list.append((pos[0], pos[1] - 1, 0))
+        if grid[pos[1]][pos[0] + 1][0].tiles_type == type:
+            list.append((pos[0], pos[1], 0))
+    else:
+        if grid[pos[1]][pos[0] - 1][0].tiles_type == type:
+            list.append((pos[0] - 1, pos[1], 1))
+        if grid[pos[1] + 1][pos[0]][0].tiles_type == type:
+            list.append((pos[0], pos[1] + 1, 1))
+        if grid[pos[1]][pos[0]][0].tiles_type == type:
+            list.append((pos[0], pos[1], 1))
+    return list

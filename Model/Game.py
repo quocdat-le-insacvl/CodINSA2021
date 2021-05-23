@@ -7,7 +7,7 @@ from Controller.Turn import Turn
 from Model.Map import Map
 from Model.Unit import Unit
 from Model.Building import Building
-from Controller.Util import find_enemy_spawn
+from Controller.Util import find_enemy_spawn, get_tile_around
 from Controller.Util import adjPos
 
 
@@ -24,7 +24,7 @@ class Game:
         self.password = game_info["password"]
         self.map = None
         self.spawn = None
-        self.balance = 300
+        self.balance = 0
         self.turn = 0
         self.list_enemy_unit = []
         self.list_enemy_building = []
@@ -147,8 +147,10 @@ class Game:
                 unit.action_attack()
                 unit.build()
                 unit.dig()
-            if self.turn > 1:
-                turn.attack(unit.pos, posSpawnEnemie)
+            turn.attack(unit.pos, posSpawnEnemie)
+            mineable = get_tile_around(self.map.grid, unit.pos, "R")
+            if len(mineable) > 0:
+                turn.mine(unit.pos, mineable[0])
 
         for building in self.map.list_building:
             new_unit = building.create_unit()
