@@ -30,9 +30,47 @@ class Game:
 
     def init(self, json):
         self.spawn = (json["spawn"][0], json["spawn"][1], int(json["spawn"][2]))
-        self.map = Map(json["map"], self.spawn)
+        self.map = Map(json["map"], self.spawn, self)
+
+    def update_list_unit(self):
+        for key in self.map.list_unit :
+            self.map.list_unit[key] = key.pos
+
+    def analyse_visible(self, data):
+        print("TESTING")
+        visible_data = data["visible"]
+        print(self.map.list_building)
+
+        self.update_list_unit()
+
+        for key in visible_data:
+            # iterate every signle case visible 
+            # check if it's a enemy | a building of enemy
+            value = visible_data[key]
+            print(key, value)
+            
+            if len(value) > 1:
+                value = value.split(";")
+                print("this", value[1])
+                _type = value[1]
+                if _type in ["C", "S", "T", "W"]:
+                    # this is a building!
+                    
+                    key = tuple(key[1:len(key)-1].split(", "))
+                    key = (int(key[0]), int(key[1]), int(bool(key[2])))
+                    print(key, self.map.list_building.values())
+                    if key not in self.map.list_building.values():
+                        print("Dectected enemy's building!")
+                else:
+                    key = tuple(key[1:len(key)-1].split(", "))
+                    key = (int(key[0]), int(key[1]), int(bool(key[2])))
+                    print(key, self.map.list_unit.values())
+                    if key not in self.map.list_unit.values():
+                        print("Dectected enemy's unit!")
+
 
     def analyse(self, data):
+        self.analyse_visible(data)
         for moved in data["moved"]:
             if moved[2]:
                 dep = moved[0]
@@ -46,14 +84,15 @@ class Game:
             pass
         for summoned in data["summoned"]:
             if summoned[2]:
-                unit = Unit(summoned[0], summoned[1])
-                self.map.list_unit.append(unit)
+                unit = Unit(summoned[0], summoned[1], self)
+                self.map.list_unit[unit] = summoned[0]
                 self.map.grid[summoned[0][1]][summoned[0][0]][int(summoned[0][2])].unit = unit
         for killed in data["killed"]:
             pass
         
-        # for visible in data["visible"]:
 
+
+                
         self.balance = data["balance"]
         self.turn = data["turn"]
         # Check in case of error

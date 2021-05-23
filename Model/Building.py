@@ -33,10 +33,10 @@ class Building:
             assert "Error : Wrong building type!"
 
     def __repr__(self):
-        return "type {0}; life {1}; price{2}".format(self.building_type, self.life, self.price)
+        return "{0};{1};{2}".format(self.building_type, self.pos, self.life)
 
     def __str__(self):
-        return "type {0}; life {1}; price{2}".format(self.building_type, self.life, self.price)
+        return "{0};{1};{2}".format(self.building_type, self.pos, self.life)
 
     def get_letter(self):
         return self.building_type

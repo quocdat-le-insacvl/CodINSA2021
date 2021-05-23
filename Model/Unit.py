@@ -3,7 +3,8 @@ import random
 
 class Unit:
 
-    def __init__(self, pos, unit_type):
+    def __init__(self, pos, unit_type, game):
+        self.game = game
         self.pos = pos
         self.unit_type = unit_type
         if unit_type == "V":
@@ -56,6 +57,7 @@ class Unit:
         return moves
 
     def move_complex(self, grid):
+        # print(self.)
         pass
 
     def action_attack(self):

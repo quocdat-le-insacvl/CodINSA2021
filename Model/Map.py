@@ -10,12 +10,13 @@ from Controller.Util import PriorityQueue
 
 class Map:
 
-    def __init__(self, json_map, spawn):
+    def __init__(self, json_map, spawn, game):
+        self.game = game
         rows = (json_map.splitlines())
         self.height = len(rows)
         self.grid = []
-        self.list_unit = []
-        self.list_building = []
+        self.list_unit = {}
+        self.list_ressource = []
         i = 0
         for row in rows:
             row = row.split(" ")
@@ -24,8 +25,13 @@ class Map:
             j = 0
             while j < len(row):
                 z_dimension = []
-                z_dimension.append(Case(row[j], (j//2, i, 0), None))
-                z_dimension.append(Case(row[j+1], ((j+1)//2, i, 1), None))
+                z_dimension.append(Case(row[j], (j//2, i, 0), None, game))
+                z_dimension.append(Case(row[j+1], ((j+1)//2, i, 1), None, game))
+                # Detect ressource
+                if  row[j] == 'R':
+                    self.list_ressource.append((j//2, i, 0))
+                if  row[j+1] == 'R':
+                    self.list_ressource.append(((j+1)//2, i, 1))
                 j += 2
                 y_dimension.append(z_dimension)
             self.grid.append(y_dimension)
@@ -33,7 +39,7 @@ class Map:
         self.spawn = Building((spawn[0], spawn[1], spawn[2]), "S")
         self.grid[spawn[1]][spawn[0]][spawn[2]].building = self.spawn
         self.grid[spawn[1]][spawn[0]][spawn[2]].owned = True
-        self.list_building = [self.spawn]
+        self.list_building = {self.spawn:(spawn[0], spawn[1], spawn[2])}
             
     def isValid(self, pos):
         return pos[0]>=0 and pos[0]<self.height and pos[1]>=0 and pos[1]<self.width and self.grid[pos[0]][pos[1]][pos[2]].tiles_type !="A" and self.grid[pos[0]][pos[1]][pos[2]].tiles_type !="R"
