@@ -53,5 +53,13 @@ class Game:
     def new_turn(self):
         turn = Turn()
 
-        if self.list_unit:
-            pass
+        """ Unit movement, attack, build and dig"""
+        for unit in self.list_unit:
+            unit.move()
+            unit.attack()
+            unit.build()
+            unit.dig()
+
+        for building in self.list_building:
+            building.create_unit()
+

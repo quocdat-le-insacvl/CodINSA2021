@@ -37,6 +37,9 @@ class Building:
     def get_letter(self):
         return self.building_type
 
+    def create_unit(self):
+        pass
+
 
 
 

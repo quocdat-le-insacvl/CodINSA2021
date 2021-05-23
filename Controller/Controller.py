@@ -31,7 +31,6 @@ class Controller:
     def send(self, sock, data):
         sock.send((json.dumps(data) + "\n").encode())
 
-
     def run(self):
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
             sock.connect((self.host, self.game.port))
@@ -44,15 +43,15 @@ class Controller:
                     """ Début du jeu """
                     if "game" in data and data["game"] == "begin":
                         self.game.init(data)
+                        # print(self.game.map.grid[1][8][1].pos)
+                        # print(self.game.map.pathFinder(self.game.map.grid[1][8][1].pos, self.game.map.grid[10][8][1].pos))
                     else:
-                        # Analyse data receive
-                        pass
-                        # self.game.analyse(data)
-
-                    if data["your_turn"]:
-                        turn = Turn()
-                        turn.summon((self.game.spawn[0], self.game.spawn[1], 1), "V")
-                        turn.send(sock, self.game.password)
+                        if data["your_turn"]:
+                            turn = Turn()
+                            turn.summon((self.game.spawn[0], self.game.spawn[1], 1), "V")
+                            turn.send(sock, self.game.password)
+                        else:
+                            self.game.analyse(data)
 
                     View.convert_map(self.game.map.grid)
         self.game.leave_game()

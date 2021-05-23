@@ -36,3 +36,15 @@ class Unit:
 
     def get_letter(self):
         return self.unit_type
+
+    def move(self):
+        pass
+
+    def attack(self):
+        pass
+
+    def build(self):
+        pass
+
+    def dig(self):
+        pass

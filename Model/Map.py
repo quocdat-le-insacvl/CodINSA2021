@@ -22,15 +22,14 @@ class Map:
             j = 0
             while j < len(row):
                 z_dimension = []
-                z_dimension.append(Case(row[j], (j//2, i, 0)))
-                z_dimension.append(Case(row[j+1], ((j+1)//2, i, 1)))
+                z_dimension.append(Case(row[j], (j//2, i, 0), None))
+                z_dimension.append(Case(row[j+1], ((j+1)//2, i, 1), None))
                 j += 2
                 y_dimension.append(z_dimension)
             self.grid.append(y_dimension)
             i += 1
         self.grid[spawn[1]][spawn[0]][spawn[2]].building = Building((spawn[0], spawn[1], spawn[2]), "S")
         self.grid[spawn[1]][spawn[0]][spawn[2]].owned = True
-        View.convert_map(self.grid)
             
     def isValid(self, pos):
         return pos[0]>=0 and pos[0]<self.height and pos[1]>=0 and pos[1]<self.width and self.grid[pos[0]][pos[1]][pos[2]].tiles_type !="A" and self.grid[pos[0]][pos[1]][pos[2]].tiles_type !="R"
