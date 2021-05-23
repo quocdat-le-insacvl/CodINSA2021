@@ -138,7 +138,7 @@ class Game:
                                                                                        content[1])
                     self.map.grid[pos[1]][pos[0]][int(pos[2])].building.life = int(content[2])
                 else:
-                    if content[1] in ["S", "C", "T", "W"]:
+                    if content[1] in ["V", "L", "H"]:
                         if self.map.grid[pos[1]][pos[0]][int(pos[2])].unit is None:
                             self.map.grid[pos[1]][pos[0]][int(pos[2])].unit = Unit(
                                 (pos[0], pos[1], bool(pos[2])), content[1])
