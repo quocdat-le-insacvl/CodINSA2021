@@ -22,7 +22,6 @@ class Game:
         self.port = game_info["port"]
         self.game_id = game_info["game_id"]
         self.password = game_info["password"]
-        self.list_unit = []
         self.map = None
         self.spawn = None
         self.balance = 0
@@ -42,7 +41,7 @@ class Game:
         self.map = Map(json["map"], self.spawn, self)
 
     def analyse_visible(self, data):
-        list_pos_unit = [unit.pos for unit in self.list_unit]
+        list_pos_unit = [unit.pos for unit in self.map.list_unit]
         list_pos_building = [building.pos for building in self.map.list_building]
         visible_data = data["visible"]
         self.list_enemy_unit = []
