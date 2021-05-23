@@ -274,6 +274,8 @@ class Game:
                 unit.dig()
 
             possibility = find_nearby_enemy(self.map.grid, unit.pos)
+            possibility.append(posSpawnEnemie)
+
             if len(possibility) > 0:
                 turn.attack(unit.pos, possibility[0])
 
