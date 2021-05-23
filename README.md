@@ -1,6 +1,20 @@
 # Bienvenue sur le dépot gitlab de la finale de Cod'INSA 2021 de l'équipe Centre-Val-de-Loire
 Vous devrez déposer ici vos solutions (code exécutable) pour répondre au sujet de la finale 2021. Vous avez jusqu'au dimanche 23 mai 2021, à 19h30 précises pour rendre vos codes
 
+# Installation
+
+- Python 3.8
+
+```
+$ pip install requests
+$ pip install pygame
+$ pip install socket
+```
+
+# Multiplayer 
+
+- Controller(False, "CVL2", "b\\\\0ZgPJLU=3&#]L9k'l6", True, "CVL", "MMBIBC6H")
+
 ## Documentation du sujet
 |Version | Date heure     |lien      |
 | :--------------- |:---------------:| -----:|
