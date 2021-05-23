@@ -50,6 +50,7 @@ class Visualization:
         offset = 600
         circle_rate = 12
         offset_char = 10
+        print(self.game.list_enemy_unit)
         for j in range(height):
             for i in range(width):
                 building1 = self.map.grid[j][i][0].building
@@ -111,6 +112,14 @@ class Visualization:
                     self.screen.blit(img, (x2-offset_char + 1,y2 - offset_char + 5))
                     self.DrawBar((x2 - 20, y2 - 9), (40, 10), PROGRESS,
                                  self.map.grid[j][i][1].unit.life / self.map.grid[j][i][1].unit.max_life)
+
+                # show enemy
+                # for enemy_unit in self.game.list_unit:
+                    # print("enemy here!", enemy_unit.pos)
+                    # if enemy_unit.pos == [i, j, 0]:
+                        # img = self.font.render('e' + enemy_unit.unit_type, True, RED)
+                        # self.screen.blit(img, (x1-offset_char + 1, y1 - offset_char + 5))
+                        
 
 
                 # print balance

@@ -8,7 +8,7 @@ class Unit:
         self.pos = pos
         self.unit_type = unit_type
         if owned:
-            self.game.map.list_unit.append(self)
+            self.game.list_unit.append(self)
         if unit_type == "V":
             self.price = 20
             self.life = 20

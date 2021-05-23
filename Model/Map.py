@@ -16,7 +16,6 @@ class Map:
         rows = (json_map.splitlines())
         self.height = len(rows)
         self.grid = []
-        self.list_unit = []
         self.list_ressource = []
         i = 0
         for row in rows:

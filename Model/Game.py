@@ -22,6 +22,7 @@ class Game:
         self.port = game_info["port"]
         self.game_id = game_info["game_id"]
         self.password = game_info["password"]
+        self.list_unit = []
         self.map = None
         self.spawn = None
         self.balance = 300
@@ -41,7 +42,7 @@ class Game:
         self.map = Map(json["map"], self.spawn, self)
 
     def analyse_visible(self, data):
-        list_pos_unit = [unit.pos for unit in self.map.list_unit]
+        list_pos_unit = [unit.pos for unit in self.list_unit]
         list_pos_building = [building.pos for building in self.map.list_building]
         visible_data = data["visible"]
         self.list_enemy_unit = []
@@ -119,7 +120,6 @@ class Game:
         for key in data:
             print(key, data[key])
         print("-----------------------------------")
-        print(self.map.list_unit)
         print()
         print()
 
@@ -137,7 +137,7 @@ class Game:
 
         """ Unit movement, attack, build and dig"""
         posSpawnEnemie = find_enemy_spawn(self.map)
-        for unit in self.map.list_unit:
+        for unit in self.list_unit:
             list_Path = self.map.pathFinder(tuple(unit.pos), adjPos(posSpawnEnemie)[random.randint(0,2)])
             if list_Path is not None:
                 if self.map.grid[list_Path[0][1]][list_Path[0][0]][list_Path[0][2]].tiles_type=="M":
