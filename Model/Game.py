@@ -62,7 +62,7 @@ class Game:
                 else:
                     key = json.loads(key)
                     if key not in list_pos_unit:
-                        self.list_enemy_unit.append(Unit(key, _type, self, False))
+                        self.list_enemy_unit.append(Unit(key, _type, False))
                         # print(key)
                         # print("enemy unit")
                         # print(list_pos_unit)
@@ -89,7 +89,8 @@ class Game:
             pass
         for summoned in data["summoned"]:
             if summoned[2]:
-                unit = Unit(summoned[0], summoned[1], self)
+                unit = Unit(summoned[0], summoned[1])
+                self.map.list_unit.append(unit)
                 # self.map.list_unit[unit] = summoned[0]
                 self.map.grid[summoned[0][1]][summoned[0][0]][int(summoned[0][2])].unit = unit
         for killed in data["killed"]:
