@@ -70,9 +70,8 @@ class Game:
         self.turn = data["turn"]
         # Check in case of error
         for val in data["errors"].values():
-            assert(val == []) , data["errors"]
+            assert (val == []), data["errors"]
         self.show_analyse(data)
-
 
     def show_analyse(self, data):
         print()
@@ -100,7 +99,7 @@ class Game:
         """ Unit movement, attack, build and dig"""
         posSpawnEnemie = find_enemy_spawn(self.map)
         for unit in self.map.list_unit:
-            list_Path = self.map.pathFinder(tuple(unit.pos), adjPos(posSpawnEnemie)[random.randint(0,2)])
+            list_Path = self.map.pathFinder(tuple(unit.pos), adjPos(posSpawnEnemie)[0])
             print("deplacement", unit.pos, list_Path)
             if list_Path is not None:
                 print("deplacement", unit.pos, list_Path)
@@ -108,6 +107,8 @@ class Game:
                 unit.action_attack()
                 unit.build()
                 unit.dig()
+            if self.turn > 1:
+                turn.attack(unit.pos, posSpawnEnemie)
 
         for building in self.map.list_building:
             new_unit = building.create_unit()

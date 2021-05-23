@@ -17,10 +17,10 @@ class Turn:
     def move(self, pos, dests):
         self.moves[pos_to_str(pos)] = [[dest[0], dest[1], bool(dest[2])] for dest in dests]
 
-    def attack(self, pos, *dests):
-        self.attacks[pos_to_str(pos)] = [[dest[0], dest[1], bool(dest[2])] for dest in dests]
+    def attack(self, pos, dest):
+        self.attacks[pos_to_str(pos)] = [dest[0], dest[1], bool(dest[2])]
 
-    def mine(self, pos, *dests):
+    def mine(self, pos, dests):
         self.mines[pos_to_str(pos)] = [[dest[0], dest[1], bool(dest[2])] for dest in dests]
 
     def build(self, pos, dest, type):
