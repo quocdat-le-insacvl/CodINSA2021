@@ -99,11 +99,12 @@ class Game:
         """ Unit movement, attack, build and dig"""
         posSpawnEnemie = find_enemy_spawn(self.map)
         for unit in self.map.list_unit:
-            list_Path = self.map.pathFinder(tuple(unit.pos), adjPos(posSpawnEnemie)[0])
-            print("deplacement", unit.pos, list_Path)
+            list_Path = self.map.pathFinder(tuple(unit.pos), adjPos(posSpawnEnemie)[random.randint(0,2)])
             if list_Path is not None:
-                print("deplacement", unit.pos, list_Path)
-                turn.move(unit.pos, list_Path[0:1])
+                if self.map.grid[list_Path[0][1]][list_Path[0][0]][list_Path[0][2]].tiles_type=="M":
+                    turn.move(unit.pos, list_Path[0:(unit.movement//2)])
+                else:
+                    turn.move(unit.pos, list_Path[0:unit.movement])
                 unit.action_attack()
                 unit.build()
                 unit.dig()
