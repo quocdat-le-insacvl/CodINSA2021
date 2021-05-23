@@ -10,4 +10,5 @@ if __name__ == "__main__":
     parser.add_argument("secretkey", type=str)
     parser.add_argument("room_id", type=str)
     args = parser.parse_args()
-    app = Controller(bool(args.gui), args.username, args.password, bool(args.multiplayer), args.secretkey, args.room_id if args.room_id != "" else None)
+    app = Controller(bool(args.gui), args.username, args.password, bool(args.multiplayer),
+                     args.secretkey if args.secretkey != "" else None, args.room_id if args.room_id != "" else None)
