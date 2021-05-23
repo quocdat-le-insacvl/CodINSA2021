@@ -78,6 +78,7 @@ class Game:
                     key = json.loads(key)
                     if key not in list_pos_unit:
                         self.list_enemy_unit.append(Unit(key, _type, False))
+
                         # print(key)
                         # print("enemy unit")
                         # print(list_pos_unit)
@@ -125,8 +126,7 @@ class Game:
                     case.visible = False
                     if not pos_to_str(case.pos) in data["visible"]:
                         if case.unit is not None and not case.unit.isOwned:
-                            if case.building is not None and not case.building.isOwned:
-                                case.unit = None
+                            case.unit = None
         for visible in data["visible"]:
             pos = json.loads(visible)
             content = data["visible"][visible].split(";")
