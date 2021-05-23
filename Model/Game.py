@@ -112,6 +112,12 @@ class Game:
             pass
         for mined in data["mined"]:
             pass
+        for build in data["built"]:
+            print(build)
+            # built [[[0, 17, True], [1, 17, False], 'C', False]]
+            if build[2] :
+                self.map.list_building.append(Building(build[1], "C"))
+
         for summoned in data["summoned"]:
             if summoned[2]:
                 unit = Unit(summoned[0], summoned[1], True)
@@ -280,6 +286,7 @@ class Game:
                                 break
                             imax -= 1
 
+                unit.build(self, turn) 
             possibility = find_nearby_enemy(self.map.grid, unit.pos)
             possibility.append(posSpawnEnemie)
 
@@ -290,7 +297,8 @@ class Game:
             available = list(set(near_pos).intersection(self.map.list_ressource))
             if len(available) > 0:
                 turn.mine(unit.pos, available[0])
-
+        print("we building")
+        print(self.map.list_building)
         for building in self.map.list_building:
             new_unit = building.create_unit()
             for i in new_unit:
