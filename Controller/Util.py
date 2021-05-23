@@ -26,6 +26,17 @@ def find_enemy_spawn(gameMap):
                             return gameMap.grid[x][y][z].building.pos
 
 
+def find_nearby_enemy(grid, pos):
+    res = []
+    near_pos = adjPos(pos)
+    for line in grid:
+        for row in line:
+            for case in row:
+                if case.unit is not None and not case.unit.isOwned and case.pos in near_pos:
+                    res.append(pos)
+    return res
+
+
 def pos_to_str(pos: tuple):
     return "[{0},{1},{2}]".format(pos[0], pos[1], "true" if pos[2] else "false")
 

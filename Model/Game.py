@@ -8,7 +8,7 @@ from Controller.Turn import Turn
 from Model.Map import Map
 from Model.Unit import Unit
 from Model.Building import Building
-from Controller.Util import find_enemy_spawn
+from Controller.Util import find_enemy_spawn, find_nearby_enemy
 from Controller.Util import adjPos
 
 
@@ -234,7 +234,11 @@ class Game:
                 unit.action_attack()
                 unit.build()
                 unit.dig()
-            turn.attack(unit.pos, posSpawnEnemie)
+
+            possibility = find_nearby_enemy(self.map.grid, unit.pos)
+            if len(possibility) > 0:
+                turn.attack(unit.pos, possibility[0])
+
             near_pos = adjPos(unit.pos)
             available = list(set(near_pos).intersection(self.map.list_ressource))
             if len(available) > 0:
