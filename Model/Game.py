@@ -53,6 +53,9 @@ class Game:
             pass
         self.balance = data["balance"]
         self.turn = data["turn"]
+        # Check in case of error
+        for val in data["errors"].values():
+            assert(val == []) , data["errors"]
         self.show_analyse(data)
 
 

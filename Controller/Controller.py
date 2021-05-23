@@ -40,7 +40,14 @@ class Controller:
             while flag:
                 data = sock.recv(20480)
                 if data is not None:
-                    data = json.loads(data.decode("UTF-8"))
+                    try:
+                        data = json.loads(data.decode("UTF-8"))
+                    except Exception as E:
+                        print(data)
+                        print(str(E))
+                        print("On a perdu!")
+                        break 
+
 
                     """ Début du jeu """
                     if "game" in data and data["game"] == "begin":
@@ -63,6 +70,7 @@ class Controller:
                                 """ On récupère les infos de notre tour """
                                 self.game.analyse(data)
                         else:
+                            print(data)
                             flag = False
 
                     self.visualization.draw()
