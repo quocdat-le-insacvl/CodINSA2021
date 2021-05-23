@@ -165,6 +165,7 @@ class Game:
 
         """ Unit movement, attack, build and dig"""
         posSpawnEnemie = find_enemy_spawn(self.map)
+        current_moves = []
         for unit in self.map.list_unit:
             # Liste des positions autour du spawn enemie
             listPositiontoAttackSpawnEnemie = adjPos(posSpawnEnemie)
@@ -175,7 +176,8 @@ class Game:
                 if tuple(unit.pos) in listPositiontoAttackSpawnEnemie:
                     break
                 if self.map.isValid(pos):
-                    posToAttack = pos
+                    if self.map.grid[pos[1]][pos[0]][pos[2]].unit is None or self.map.grid[pos[1]][pos[0]][pos[2]].unit is not None and not self.map.grid[pos[1]][pos[0]][pos[2]].unit.isOwned:
+                        posToAttack = pos
 
             #Calcule le déplacement pur aller vers cette position
             list_Path = None
@@ -185,12 +187,34 @@ class Game:
             # Déplace l'unit
             if list_Path is not None:
                 if self.map.grid[list_Path[0][1]][list_Path[0][0]][list_Path[0][2]].tiles_type=="M":
-                    turn.move(unit.pos, list_Path[0:(unit.movement//2)])
+                    imax = (unit.movement // 2)
+                    while imax != 0:
+                        moves = list_Path[0:imax]
+                        if moves not in current_moves:
+                            current_moves.append(moves)
+                            turn.move(unit.pos, moves)
+                            break
+                        imax -= 1
+
                 else:
                     if len(list_Path) > 1 and self.map.grid[list_Path[1][1]][list_Path[1][0]][list_Path[1][2]].tiles_type=="M":
-                        turn.move(unit.pos, list_Path[0:(unit.movement//2)])
+                        imax = (unit.movement // 2)
+                        while imax != 0:
+                            moves = list_Path[0:imax]
+                            if moves not in current_moves:
+                                current_moves.append(moves)
+                                turn.move(unit.pos, moves)
+                                break
+                            imax -= 1
                     else:
-                        turn.move(unit.pos, list_Path[0:unit.movement])
+                        imax = unit.movement
+                        while imax != 0:
+                            moves = list_Path[0:imax]
+                            if moves not in current_moves:
+                                current_moves.append(moves)
+                                turn.move(unit.pos, moves)
+                                break
+                            imax -= 1
 
                 unit.action_attack()
                 unit.build()

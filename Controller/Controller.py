@@ -13,7 +13,7 @@ from View.Visualization import Visualization
 class Controller:
 
     def __init__(self):
-        self.ai_mode = "StaticAI"
+        self.ai_mode = "InactiveAI"
         self.url = "http://codinsa.insa-rennes.fr/"
         self.host = "codinsa.insa-rennes.fr"
         self.cookie = self.login()
