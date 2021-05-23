@@ -14,12 +14,12 @@ from Controller.Util import adjPos
 
 class Game:
 
-    def __init__(self, url, cookie, ai_mode):
+    def __init__(self, url, cookie, ai_mode, multiplayer, code, game_id):
         self.url = url
         self.cookie = cookie
         for game in self.list_game():
             self.leave_game(game)
-        game_info = self.create_AIgame(ai_mode)
+        game_info = self.create_multiplayer_game(code, game_id) if multiplayer else self.create_AIgame(ai_mode)
         self.port = game_info["port"]
         self.game_id = game_info["game_id"]
         self.password = game_info["password"]
@@ -30,12 +30,25 @@ class Game:
         self.turn = 0
         self.list_enemy_unit = []
         self.list_enemy_building = []
+        print(self.game_id)
 
     def create_AIgame(self, AItype):
         data = {
             "ai": AItype,
         }
         r = requests.get(self.url + "game/new", data, cookies=self.cookie)
+        return r.json()
+
+    def create_multiplayer_game(self, code, game_id):
+        r = None
+
+        if game_id is not None:
+            r = requests.get(self.url + "game/" + game_id + "?privkey=" + code, cookies=self.cookie)
+        elif code is not None:
+            r = requests.get(self.url + "game/new?privkey=" + code, cookies=self.cookie)
+        else:
+            r = requests.get(self.url + "game/new?multiplayer=1", cookies=self.cookie)
+
         return r.json()
 
     def init(self, json):

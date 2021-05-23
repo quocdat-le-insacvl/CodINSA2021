@@ -15,7 +15,7 @@ VISIBLE_COLOR = (169,169,169)
 PROGRESS = (46, 117, 49)
 
 # game settings
-WIDTH = 1024 + 600   # 16 * 64 or 32 * 32 or 64 * 16
+WIDTH = 1024 + 900   # 16 * 64 or 32 * 32 or 64 * 16
 HEIGHT = 768 + 300  # 16 * 48 or 32 * 24 or 64 * 12
 FPS = 30
 TITLE = "Visualization"
