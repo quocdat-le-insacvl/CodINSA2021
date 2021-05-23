@@ -63,7 +63,9 @@ class Controller:
                                 """ On récupère les infos de notre tour """
                                 self.game.analyse(data)
                         else:
+                            print(data)
                             flag = False
 
                     self.visualization.draw()
         self.game.leave_game()
+        print("adieux")

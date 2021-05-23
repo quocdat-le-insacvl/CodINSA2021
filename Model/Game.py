@@ -37,6 +37,7 @@ class Game:
                 dep = moved[0]
                 arr = moved[1][-1]
                 self.map.grid[arr[1]][arr[0]][arr[2]].unit = self.map.grid[dep[1]][dep[0]][dep[2]].unit
+                self.map.grid[arr[1]][arr[0]][arr[2]].unit.pos = arr
                 self.map.grid[dep[1]][dep[0]][dep[2]].unit = None
 
         for attacked in data["attacked"]:
@@ -79,10 +80,10 @@ class Game:
         """ Unit movement, attack, build and dig"""
         for unit in self.map.list_unit:
             turn.move(unit.pos, unit.move(self.map.grid))
-            turn.attack(unit.pos, unit.action_attack(self.map.grid))
-            unit.build()
-            unit.dig()
-
+        #     turn.attack(unit.pos, unit.action_attack(self.map.grid))
+        #     build = unit.build(self.map.grid)
+        #     turn.build(unit.pos, build[0], build[1])
+        #     unit.dig()
         for building in self.map.list_building:
             new_unit = building.create_unit()
             for i in new_unit:

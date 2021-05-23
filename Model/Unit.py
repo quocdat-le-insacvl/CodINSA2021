@@ -42,18 +42,23 @@ class Unit:
         return self.unit_type
 
     def move(self, grid):
+        imax = len(grid)
+        jmax = len(grid[0])
         i = self.movement
         possible_move = [[1,0,0], [0,-1,0], [0,0,0]] if self.pos[2] else [[-1,0,1],[0,1,1],[0,0,1]]
         moves = []
         last_pos = self.pos
-        while i != 0:
+        while i != 0 and possible_move:
             choice = random.choice(possible_move)
             pos = [last_pos[0] + choice[0], last_pos[1] + choice[1], choice[2]]
-            cost = grid[pos[1]][pos[0]][pos[2]].cost
-            if i >= cost:
-                moves.append(pos)
-                last_pos = pos
-                i -= cost
+            if 0 <= pos[1] < imax and 0 <= pos[0] < jmax:
+                cost = grid[pos[1]][pos[0]][pos[2]].cost
+                if i >= cost:
+                    moves.append(pos)
+                    last_pos = pos
+                    i -= cost
+            else:
+                possible_move.remove(choice)
         return moves
 
     def action_attack(self, grid):
@@ -65,8 +70,17 @@ class Unit:
                 attacks.append(pos)
         return attacks
 
-    def build(self):
-        pass
+    def build(self, grid):
+        if self.canBuild:
+            possible_pos = [[1,0,0], [0,-1,0], [0,0,0]] if self.pos[2] else [[-1,0,1],[0,1,1],[0,0,1]]
+            build = []
+            for (x,y,bool) in possible_pos:
+                pos = [y + self.pos[1], x + self.pos[0], bool]
+                if grid[pos[0]][pos[1]][pos[2]].canBuild:
+                    build.append(pos)
+                    build.append("W")
+                    break
+            return build
 
     def dig(self):
         pass
