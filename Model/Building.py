@@ -49,8 +49,12 @@ class Building:
     def create_unit(self):
         possible_pos = [[1, 0, 0], [0, -1, 0], [0, 0, 0]] if self.pos[2] else [[-1, 0, 1], [0, 1, 1], [0, 0, 1]]
         unit = {"V": [], "L": [], "H": []}
-        for (x, y, bool) in possible_pos:
-            unit["V"].append([self.pos[0] + x, self.pos[1] + y, bool])
+        if self.building_type == "S": 
+            for (x, y, bool) in possible_pos:
+                unit["V"].append([self.pos[0] + x, self.pos[1] + y, bool])
+        elif self.building_type == "C":
+            for (x, y, bool) in possible_pos:
+                unit["H"].append([self.pos[0] + x, self.pos[1] + y, bool])
         return unit
 
 

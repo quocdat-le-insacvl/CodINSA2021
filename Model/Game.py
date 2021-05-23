@@ -298,7 +298,8 @@ class Game:
             available = list(set(near_pos).intersection(self.map.list_ressource))
             if len(available) > 0:
                 turn.mine(unit.pos, available[0])
-
+        print("we building")
+        print(self.map.list_building)
         for building in self.map.list_building:
             new_unit = building.create_unit()
             for i in new_unit:

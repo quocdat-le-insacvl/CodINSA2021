@@ -81,7 +81,6 @@ class Unit:
             if case.tiles_type in ["F", "M"] and any([distance(pos, j.pos) for j in game.map.list_building]):
                 if game.balance > 1000:
                     i = random.randrange(1)
-                    # game.map.list_building.append(Building(pos, d[i]))
                     turn.build(self.pos, list(pos), d[i])
                     game.balance -= c[i]
                     print("Built!!!!", pos)
