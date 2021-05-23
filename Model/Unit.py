@@ -3,7 +3,7 @@ import random
 
 class Unit:
 
-    def __init__(self, pos, unit_type, owned=True):
+    def __init__(self, pos, unit_type, owned=False):
         self.pos = pos
         self.unit_type = unit_type
         self.isOwned = owned

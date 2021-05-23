@@ -25,8 +25,8 @@ class Map:
             j = 0
             while j < len(row):
                 z_dimension = []
-                z_dimension.append(Case(row[j], (j//2, i, 0), None, game))
-                z_dimension.append(Case(row[j+1], ((j+1)//2, i, 1), None, game))
+                z_dimension.append(Case(row[j], (j//2, i, 0), game))
+                z_dimension.append(Case(row[j+1], ((j+1)//2, i, 1), game))
                 # Detect ressource
                 if row[j] == 'R':
                     self.list_ressource.append((j//2, i, 0))
@@ -36,9 +36,8 @@ class Map:
                 y_dimension.append(z_dimension)
             self.grid.append(y_dimension)
             i += 1
-        self.spawn = Building((spawn[0], spawn[1], spawn[2]), "S")
+        self.spawn = Building((spawn[0], spawn[1], spawn[2]), "S", True)
         self.grid[spawn[1]][spawn[0]][spawn[2]].building = self.spawn
-        self.grid[spawn[1]][spawn[0]][spawn[2]].owned = True
         self.list_building = [self.spawn]
         self.list_unit = []
             

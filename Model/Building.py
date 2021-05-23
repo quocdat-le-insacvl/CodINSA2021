@@ -1,8 +1,9 @@
 class Building:
 
-    def __init__(self, pos, building_type, owned=True):
+    def __init__(self, pos, building_type, owned=False):
         self.pos = pos
         self.building_type = building_type
+        self.isOwned = owned
         if building_type == "S":
             self.can_attack = False
             self.price = None

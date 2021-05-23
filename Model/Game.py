@@ -8,7 +8,7 @@ from Controller.Turn import Turn
 from Model.Map import Map
 from Model.Unit import Unit
 from Model.Building import Building
-from Controller.Util import find_enemy_spawn, get_tile_around
+from Controller.Util import find_enemy_spawn, find_nearby_enemy
 from Controller.Util import adjPos
 
 
@@ -85,7 +85,7 @@ class Game:
                         self.map.list_unit.remove(unit)
                         break
         except Exception as E:
-            print(str(E)) 
+            print(str(E))
             print("Error killed/function ")
 
         for moved in data["moved"]:
@@ -102,7 +102,7 @@ class Game:
             pass
         for summoned in data["summoned"]:
             if summoned[2]:
-                unit = Unit(summoned[0], summoned[1])
+                unit = Unit(summoned[0], summoned[1], True)
                 self.map.list_unit.append(unit)
                 # self.map.list_unit[unit] = summoned[0]
                 self.map.grid[summoned[0][1]][summoned[0][0]][int(summoned[0][2])].unit = unit
@@ -178,46 +178,46 @@ class Game:
         current_moves = []
         for unit in self.map.list_unit:
             
-            posToAttack = None
-            posToChecks = [posSpawnEnemie]
-            i=0
-            while posToAttack is None:
-                i += 1
-                if i > 100:
-                    break
-                endList = []
-                for posToCheck in posToChecks:
-                    if posToAttack is None:
-                        for newpos in adjPos(posToCheck):
-                            endList.append(newpos)
-                            
-                            if self.map.isValid(newpos) and self.map.pathFinder(tuple(unit.pos), newpos) is not None:
-                                if self.map.grid[newpos[1]][newpos[0]][newpos[2]].unit is None or self.map.grid[newpos[1]][newpos[0]][newpos[2]].unit is not None and not self.map.grid[newpos[1]][newpos[0]][newpos[2]].unit.isOwned:
-                                    posToAttack = newpos
-                                    break
-                print(endList)
-                posToChecks = endList
-                
-            print(unit.pos, posToAttack)
-            
-            # # Liste des positions autour du spawn enemie
-            # listPositiontoAttackSpawnEnemie = adjPos(posSpawnEnemie)
-            # listPositiontoAttackSpawnEnemieExtended = listPositiontoAttackSpawnEnemie.copy()
-            # for newpos in listPositiontoAttackSpawnEnemie.copy():
-                # for newposadd in adjPos(newpos):
-                    # if self.map.isValid(newposadd):
-                        # listPositiontoAttackSpawnEnemieExtended.append(newposadd)
-
-            # # Récuppère une position d'attaque disponible
             # posToAttack = None
-            # for pos in listPositiontoAttackSpawnEnemieExtended:
-                # if tuple(unit.pos) in listPositiontoAttackSpawnEnemie:
+            # posToChecks = [posSpawnEnemie]
+            # i=0
+            # while posToAttack is None:
+                # i += 1
+                # if i > 3:
                     # break
+                # endList = []
+                # for posToCheck in posToChecks:
+                    # if posToAttack is None:
+                        # for newpos in adjPos(posToCheck):
+                            # endList.append(newpos)
+                            
+                            # if self.map.isValid(newpos) and self.map.pathFinder(tuple(unit.pos), newpos) is not None:
+                                # if self.map.grid[newpos[1]][newpos[0]][newpos[2]].unit is None or self.map.grid[newpos[1]][newpos[0]][newpos[2]].unit is not None and not self.map.grid[newpos[1]][newpos[0]][newpos[2]].unit.isOwned:
+                                    # posToAttack = newpos
+                                    # break
+                # print(endList)
+                # posToChecks = endList
+                
+            # print(unit.pos, posToAttack)
+            
+            # Liste des positions autour du spawn enemie
+            listPositiontoAttackSpawnEnemie = adjPos(posSpawnEnemie)
+            listPositiontoAttackSpawnEnemieExtended = listPositiontoAttackSpawnEnemie.copy()
+            for newpos in listPositiontoAttackSpawnEnemie.copy():
+                for newposadd in adjPos(newpos):
+                    if self.map.isValid(newposadd):
+                        listPositiontoAttackSpawnEnemieExtended.append(newposadd)
+
+            # Récuppère une position d'attaque disponible
+            posToAttack = None
+            for pos in listPositiontoAttackSpawnEnemieExtended:
+                if tuple(unit.pos) in listPositiontoAttackSpawnEnemie:
+                    break
                     
-                # if self.map.isValid(pos) and self.map.pathFinder(tuple(unit.pos), pos) is not None:
-                    # if self.map.grid[pos[1]][pos[0]][pos[2]].unit is None or self.map.grid[pos[1]][pos[0]][pos[2]].unit is not None and not self.map.grid[pos[1]][pos[0]][pos[2]].unit.isOwned:
-                        # posToAttack = pos
-                        # break
+                if self.map.isValid(pos) and self.map.pathFinder(tuple(unit.pos), pos) is not None:
+                    if self.map.grid[pos[1]][pos[0]][pos[2]].unit is None or self.map.grid[pos[1]][pos[0]][pos[2]].unit is not None and not self.map.grid[pos[1]][pos[0]][pos[2]].unit.isOwned:
+                        posToAttack = pos
+                        break
                         
             #print("pathfinder",unit.pos, listPositiontoAttackSpawnEnemie, listPositiontoAttackSpawnEnemieExtended, posToAttack)
             #Calcule le déplacement pur aller vers cette position
@@ -236,7 +236,6 @@ class Game:
                             turn.move(unit.pos, moves)
                             break
                         imax -= 1
-
                 else:
                     if len(list_Path) > 1 and self.map.grid[list_Path[1][1]][list_Path[1][0]][list_Path[1][2]].tiles_type=="M":
                         imax = (unit.movement // 2)
@@ -260,10 +259,15 @@ class Game:
                 unit.action_attack()
                 unit.build()
                 unit.dig()
-            turn.attack(unit.pos, posSpawnEnemie)
-            mineable = get_tile_around(self.map.grid, unit.pos, "R")
-            if len(mineable) > 0:
-                turn.mine(unit.pos, mineable[0])
+
+            possibility = find_nearby_enemy(self.map.grid, unit.pos)
+            if len(possibility) > 0:
+                turn.attack(unit.pos, possibility[0])
+
+            near_pos = adjPos(unit.pos)
+            available = list(set(near_pos).intersection(self.map.list_ressource))
+            if len(available) > 0:
+                turn.mine(unit.pos, available[0])
 
         for building in self.map.list_building:
             new_unit = building.create_unit()

@@ -16,29 +16,6 @@ class PriorityQueue:
         return heapq.heappop(self.elements)[1]
 
 
-def find_resources(game_map):
-    resources = []
-    x = 0
-    y = 0
-    down = 0
-    for c in game_map:
-        if c == " ":
-            continue
-        if c == "\n":
-            y = y + 1
-            x = 0
-            down = 0
-            continue
-        if c == "R":
-            resources.append((x, y, down, "R"))
-        if down == 0:
-            down = 1
-        else:
-            down = 0
-            x = x + 1
-    return resources
-
-
 def find_enemy_spawn(gameMap):
     for x in range(len(gameMap.grid)):
         for y in range(len(gameMap.grid[x])):
@@ -47,6 +24,17 @@ def find_enemy_spawn(gameMap):
                     if gameMap.grid[x][y][z].building.building_type == "S":
                         if gameMap.grid[x][y][z].building.pos is not gameMap.spawn.pos:
                             return gameMap.grid[x][y][z].building.pos
+
+
+def find_nearby_enemy(grid, pos):
+    res = []
+    near_pos = adjPos(pos)
+    for line in grid:
+        for row in line:
+            for case in row:
+                if case.unit is not None and not case.unit.isOwned and case.pos in near_pos:
+                    res.append(pos)
+    return res
 
 
 def pos_to_str(pos: tuple):
@@ -76,25 +64,4 @@ def adjPos(pos):
         list.append((pos[0] - 1, pos[1], 1))
         list.append((pos[0], pos[1] + 1, 1))
         list.append((pos[0], pos[1], 1))
-    return list
-
-
-def get_tile_around(grid, pos, type):
-    list = []
-    i_max = len(grid)
-    j_max = len(grid[0])
-    if pos[2]:
-        if 0 <= pos[1] < i_max and 0 <= pos[0] + 1 < j_max and grid[pos[1]][pos[0] + 1][0].tiles_type == type:
-            list.append((pos[0] + 1, pos[1], 0))
-        if 0 <= pos[1] - 1 < i_max and 0 <= pos[0] < j_max and grid[pos[1] - 1][pos[0]][0].tiles_type == type:
-            list.append((pos[0], pos[1] - 1, 0))
-        if 0 <= pos[1] < i_max and 0 <= pos[0] < j_max and grid[pos[1]][pos[0]][0].tiles_type == type:
-            list.append((pos[0], pos[1], 0))
-    else:
-        if 0 <= pos[1] < i_max and 0 <= pos[0] - 1 < j_max and grid[pos[1]][pos[0] - 1][1].tiles_type == type:
-            list.append((pos[0] - 1, pos[1], 1))
-        if 0 <= pos[1] + 1 < i_max and 0 <= pos[0] < j_max and grid[pos[1] + 1][pos[0]][1].tiles_type == type:
-            list.append((pos[0], pos[1] + 1, 1))
-        if 0 <= pos[1] < i_max and 0 <= pos[0] < j_max and grid[pos[1]][pos[0]][1].tiles_type == type:
-            list.append((pos[0], pos[1], 1))
     return list
