@@ -31,6 +31,7 @@ class Visualization:
         # img = font.render(text, True, RED)
 
     def draw(self):
+        pg.key.get_pressed()
         self.dt = self.clock.tick(FPS) / 1000
         self.screen.fill(WHITE)
         self.map = self.game.map
@@ -62,12 +63,10 @@ class Visualization:
                 pg.draw.circle(self.screen, color0, (x1,y1), circle_rate)
                 pg.draw.polygon(self.screen, BLACK, [[offset + R/2 + i*R - R2*j, R/2 + j*R2], [offset +i*R - R2*j , R + j*R2], [offset +R + i*R - R2*j, R+ j*R2]], 5)
                 if building1 is not None:
-                    print(building1) 
                     building1 = building1.building_type
                     img = self.font.render(building1, True, RED)
                     self.screen.blit(img, (x1-offset_char,y1-offset_char))
                 if unit1 is not None:
-                    print(unit1) 
                     unit1 = unit1.unit_type
                     img = self.font.render(unit1, True, RED)
                     self.screen.blit(img, (x1-offset_char,y1-offset_char))
@@ -83,12 +82,10 @@ class Visualization:
                 pg.draw.circle(self.screen, color1, (x2,y2), circle_rate)
                 pg.draw.polygon(self.screen, BLACK, [[offset +R/2 + i*R - j*R2, R/2+ j*R2], [offset +R*3/2 + i*R -j*R2, R/2+ j*R2], [offset +R + i*R - j*R2, R+ j*R2]], 5)
                 if building2 is not None:
-                    print(building2) 
                     building2 = building2.building_type
                     img = self.font.render(building2, True, RED)
                     self.screen.blit(img, (x2-offset_char,y2-offset_char))
                 if unit2 is not None:
-                    print(unit1) 
                     unit2 = unit2.unit_type
                     img = self.font.render(unit1, True, RED)
                     self.screen.blit(img, (x1-offset_char,y1-offset_char))
