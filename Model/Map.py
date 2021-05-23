@@ -25,8 +25,8 @@ class Map:
             j = 0
             while j < len(row):
                 z_dimension = []
-                z_dimension.append(Case(row[j], (j//2, i, 0), None, game))
-                z_dimension.append(Case(row[j+1], ((j+1)//2, i, 1), None, game))
+                z_dimension.append(Case(row[j], (j//2, i, 0), game))
+                z_dimension.append(Case(row[j+1], ((j+1)//2, i, 1), game))
                 # Detect ressource
                 if row[j] == 'R':
                     self.list_ressource.append((j//2, i, 0))

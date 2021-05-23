@@ -211,7 +211,6 @@ class Game:
                             turn.move(unit.pos, moves)
                             break
                         imax -= 1
-
                 else:
                     if len(list_Path) > 1 and self.map.grid[list_Path[1][1]][list_Path[1][0]][list_Path[1][2]].tiles_type=="M":
                         imax = (unit.movement // 2)
