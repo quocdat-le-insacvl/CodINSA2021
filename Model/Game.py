@@ -34,7 +34,7 @@ class Game:
         print()
         print("-----------------------------------")
         for key in data:
-            print(key , data[key])
+            print(key, data[key])
         print("-----------------------------------")
         print()
         print()

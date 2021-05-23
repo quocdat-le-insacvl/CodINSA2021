@@ -1,4 +1,4 @@
-import math
+import os
 
 
 class View:
@@ -7,17 +7,23 @@ class View:
 
     @staticmethod
     def convert_map(grid):
+        result = ""
         for line in grid:
             for row in line:
                 for case in row:
-                    print(case.tiles_type, end="")
+                    result += case.tiles_type  # case.tiles_type
                     if case.building is not None:
-                        print(case.building.building_type, end="")
+                        result += case.building.building_type
                     elif case.unit is not None:
                         print(case.unit.unit_type, end="")
                     if case.owned == True:
-                        print(1, end="")
+                        result += "1"
                     elif case.owned == False:
-                        print(2, end="")
-                    print(" ", end="")
-            print()
+                        result += "2"
+                    result += " "
+            result += "\n"
+        print(result)
+        if os.path.isfile("out.txt"):
+            with open('out.txt', 'w') as f:
+                f.write(result)
+
