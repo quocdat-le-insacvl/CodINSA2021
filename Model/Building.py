@@ -7,12 +7,14 @@ class Building:
             self.can_attack = False
             self.price = None
             self.life = 240
+            self.max_life = 240
             self.score_killed = 100
             self.unit = ["V"]
         elif building_type == "C":
             self.can_attack = False
             self.price = 250
             self.life = 160
+            self.max_life = 160
             self.score_killed = 60
             self.unit = ["L", "H"]
         elif building_type == "T":
@@ -20,6 +22,7 @@ class Building:
             self.price = 70
             self.attack = 35
             self.life = 60
+            self.max_life = 60
             self.attack_distance = 2
             self.score_killed = 30
             self.unit = []
@@ -27,6 +30,7 @@ class Building:
             self.can_attack = False
             self.price = 30
             self.life = 120
+            self.max_life = 120
             self.score_killed = 15
             self.unit = []
         else: 

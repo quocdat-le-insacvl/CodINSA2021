@@ -12,6 +12,7 @@ class Unit:
         if unit_type == "V":
             self.price = 20
             self.life = 20
+            self.max_life = 20
             self.attack = 10
             self.movement = 2
             self.score_killed = 10
@@ -20,6 +21,7 @@ class Unit:
         elif unit_type == "L":
             self.price = 30
             self.life = 60
+            self.max_life = 60
             self.attack = 20
             self.movement = 4
             self.score_killed = 15
@@ -28,6 +30,7 @@ class Unit:
         else:
             self.price = 100
             self.life = 100
+            self.max_life = 100
             self.attack = 40
             self.movement = 2
             self.score_killed = 35

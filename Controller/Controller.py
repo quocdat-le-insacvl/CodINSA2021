@@ -38,15 +38,18 @@ class Controller:
             sock.connect((self.host, self.game.port))
             flag = True
             while flag:
-                data = sock.recv(20480)
-                if data is not None:
+                data = sock.recv(1024)
+                while len(data) > 0 and data[-1] != 10:
+                    data += sock.recv(1024)
+
+                if len(data) == 0 or data is not None:
                     try:
                         data = json.loads(data.decode("UTF-8"))
                     except Exception as E:
                         print(data)
                         print(str(E))
                         print("On a perdu!")
-                        break 
+                        break
 
 
                     """ Début du jeu """

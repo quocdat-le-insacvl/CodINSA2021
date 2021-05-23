@@ -11,6 +11,7 @@ GREEN = (0, 255, 0)
 RED = (255, 0, 0)
 YELLOW = (255, 255, 0)
 VISIBLE_COLOR = (169,169,169)
+PROGRESS = (46, 117, 49)
 
 # game settings
 WIDTH = 1024 + 250   # 16 * 64 or 32 * 32 or 64 * 16
@@ -31,6 +32,11 @@ class Visualization:
         self.font = pg.font.SysFont(None, 35)
         self.big_font = pg.font.SysFont(None, 50)
         # img = font.render(text, True, RED)
+
+    def DrawBar(self, pos, size, barC, progress):
+        innerPos = (pos[0] + 3, pos[1] + 3)
+        innerSize = ((size[0] - 6) * progress, size[1] - 6)
+        pg.draw.rect(self.screen, barC, (*innerPos, *innerSize))
 
     def draw(self):
         pg.key.get_pressed()
@@ -65,17 +71,19 @@ class Visualization:
                 if self.map.grid[j][i][0].visible:
                     pg.draw.polygon(self.screen, VISIBLE_COLOR, [[x1 + 30, y1 + 10], [x1 - 30, y1 + 10], [x1, y1 - 20]])
 
-
                 pg.draw.circle(self.screen, color0, (x1,y1), circle_rate)
                 pg.draw.polygon(self.screen, BLACK, [[offset + R/2 + i*R - R2*j, R/2 + j*R2], [offset +i*R - R2*j , R + j*R2], [offset +R + i*R - R2*j, R+ j*R2]], 5)
                 if building1 is not None:
                     building1 = building1.building_type
                     img = self.font.render(building1, True, RED)
-                    self.screen.blit(img, (x1-offset_char,y1-offset_char))
+                    self.screen.blit(img, (x1-offset_char + 1,y1-offset_char - 5))
+                    self.DrawBar((x1 - 20, y1), (40, 10), PROGRESS, self.map.grid[j][i][0].building.life / self.map.grid[j][i][0].building.max_life)
                 if unit1 is not None:
                     unit1 = unit1.unit_type
                     img = self.font.render(unit1, True, RED)
-                    self.screen.blit(img, (x1-offset_char,y1-offset_char))
+                    self.screen.blit(img, (x1-offset_char + 1, y1-offset_char - 5))
+                    self.DrawBar((x1 - 20, y1), (40, 10), PROGRESS,
+                                 self.map.grid[j][i][0].unit.life / self.map.grid[j][i][0].unit.max_life)
 
 
                 x2, y2 = [offset +R/2 + i*R - j*R2, R/2+ j*R2]
@@ -94,14 +102,18 @@ class Visualization:
                 if building2 is not None:
                     building2 = building2.building_type
                     img = self.font.render(building2, True, RED)
-                    self.screen.blit(img, (x2-offset_char,y2-offset_char))
+                    self.screen.blit(img, (x2-offset_char + 1, y2-offset_char + 5))
+                    self.DrawBar((x2 - 20, y2 - 9), (40, 10), PROGRESS,
+                                 self.map.grid[j][i][1].building.life / self.map.grid[j][i][1].building.max_life)
                 if unit2 is not None:
                     unit2 = unit2.unit_type
                     img = self.font.render(unit2, True, RED)
-                    self.screen.blit(img, (x2-offset_char,y2-offset_char))
+                    self.screen.blit(img, (x2-offset_char + 1,y2 - offset_char + 5))
+                    self.DrawBar((x2 - 20, y2 - 9), (40, 10), PROGRESS,
+                                 self.map.grid[j][i][1].unit.life / self.map.grid[j][i][1].unit.max_life)
 
 
-                # print balance 
+                # print balance
                 img = self.big_font.render("balance : " + str(self.game.balance), True, BLACK)
                 self.screen.blit(img, (0,0))
                 # print turn

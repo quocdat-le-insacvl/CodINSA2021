@@ -1,4 +1,5 @@
 import math
+import random
 
 from Model.Building import Building
 from Model.Case import Case
@@ -71,6 +72,7 @@ class Map:
             return pile.pop()[1]
         else:
             return None
+
 
     def __repr__(self):
         [print(''.join(str(ligne)).strip('[]')) for ligne in self.grid]
