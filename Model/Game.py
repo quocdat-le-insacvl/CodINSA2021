@@ -208,54 +208,57 @@ class Game:
         posSpawnEnemie = find_enemy_spawn(self.map)
         current_moves = []
         for unit in self.map.list_unit:
+            posToMove = None
+            if unit.focus == "Spawn":
+                # Liste des positions autour du spawn enemie
+                listPositiontoAttackSpawnEnemie = adjPos(posSpawnEnemie)
+                listPositiontoAttackSpawnEnemieExtended = listPositiontoAttackSpawnEnemie.copy()
+                for newpos in listPositiontoAttackSpawnEnemie.copy():
+                    for newposadd in adjPos(newpos):
+                        if self.map.isValid(newposadd):
+                            listPositiontoAttackSpawnEnemieExtended.append(newposadd)
 
-            # posToAttack = None
-            # posToChecks = [posSpawnEnemie]
-            # i=0
-            # while posToAttack is None:
-            # i += 1
-            # if i > 3:
-            # break
-            # endList = []
-            # for posToCheck in posToChecks:
-            # if posToAttack is None:
-            # for newpos in adjPos(posToCheck):
-            # endList.append(newpos)
-
-            # if self.map.isValid(newpos) and self.map.pathFinder(tuple(unit.pos), newpos) is not None:
-            # if self.map.grid[newpos[1]][newpos[0]][newpos[2]].unit is None or self.map.grid[newpos[1]][newpos[0]][newpos[2]].unit is not None and not self.map.grid[newpos[1]][newpos[0]][newpos[2]].unit.isOwned:
-            # posToAttack = newpos
-            # break
-            # print(endList)
-            # posToChecks = endList
-
-            # print(unit.pos, posToAttack)
-
-            # Liste des positions autour du spawn enemie
-            listPositiontoAttackSpawnEnemie = adjPos(posSpawnEnemie)
-            listPositiontoAttackSpawnEnemieExtended = listPositiontoAttackSpawnEnemie.copy()
-            for newpos in listPositiontoAttackSpawnEnemie.copy():
-                for newposadd in adjPos(newpos):
-                    if self.map.isValid(newposadd):
-                        listPositiontoAttackSpawnEnemieExtended.append(newposadd)
-
-            # Récuppère une position d'attaque disponible
-            posToAttack = None
-            for pos in listPositiontoAttackSpawnEnemieExtended:
-                if tuple(unit.pos) in listPositiontoAttackSpawnEnemie:
-                    break
-
-                if self.map.isValid(pos) and self.map.pathFinder(tuple(unit.pos), pos) is not None:
-                    if self.map.grid[pos[1]][pos[0]][pos[2]].unit is None or self.map.grid[pos[1]][pos[0]][
-                        pos[2]].unit is not None and not self.map.grid[pos[1]][pos[0]][pos[2]].unit.isOwned:
-                        posToAttack = pos
+                # Récuppère une position d'attaque disponible
+                posToAttack = None
+                # Récuppère une position d'attaque disponible
+                for pos in listPositiontoAttackSpawnEnemieExtended:
+                    if tuple(unit.pos) in listPositiontoAttackSpawnEnemie:
                         break
+                    if self.map.isValid(pos) and self.map.pathFinder(tuple(unit.pos), pos) is not None:
+                        if self.map.grid[pos[1]][pos[0]][pos[2]].unit is None or self.map.grid[pos[1]][pos[0]][pos[2]].unit is not None and not self.map.grid[pos[1]][pos[0]][pos[2]].unit.isOwned:
+                            posToAttack = pos
+                            break
+                posToMove = posToAttack
+            elif unit.focus == "Mined":
+                voisins = adjPos(unit.pos)
+                flag_moove = True
+                for pos in voisins:
+                    xmax = len(self.map.grid)
+                    ymax = len(self.map.grid[0])
+                    if 0 <= pos[1] < xmax and 0 <= pos[0] < ymax:
+                        if self.map.grid[pos[1]][pos[0]][pos[2]].tiles_type == "R":
+                            flag_moove = False
+                            break
+                posToMined = None
+                if flag_moove:
+                    posToMined = None
+                    for res_pos in self.map.list_ressource:
+                        list_pos = adjPos(res_pos)
+                        for pos in list_pos:
+                            if self.map.isValid(pos) and self.map.pathFinder(tuple(unit.pos), pos) is not None:
+                                if self.map.grid[pos[1]][pos[0]][pos[2]].unit is None or self.map.grid[pos[1]][pos[0]][pos[2]].unit is not None and not self.map.grid[pos[1]][pos[0]][pos[2]].unit.isOwned:
+                                    posToMined = pos
+                        if posToMined is not None:
+                            break
+
+                posToMove = posToMined
 
             # print("pathfinder",unit.pos, listPositiontoAttackSpawnEnemie, listPositiontoAttackSpawnEnemieExtended, posToAttack)
             # Calcule le déplacement pur aller vers cette position
+                #Calcule le déplacement pur aller vers cette position
             list_Path = None
-            if posToAttack is not None:
-                list_Path = self.map.pathFinder(tuple(unit.pos), posToAttack)
+            if posToMove is not None:
+                list_Path = self.map.pathFinder(tuple(unit.pos), posToMove)
 
             # Déplace l'unit
             if list_Path is not None:
@@ -263,8 +266,8 @@ class Game:
                     imax = (unit.movement // 2)
                     while imax != 0:
                         moves = list_Path[0:imax]
-                        if moves not in current_moves:
-                            current_moves.append(moves)
+                        if moves[-1] not in current_moves and self.map.grid[moves[-1][1]][moves[-1][0]][moves[-1][2]].unit is None :
+                            current_moves.append(moves[-1])
                             turn.move(unit.pos, moves)
                             break
                         imax -= 1
@@ -274,8 +277,8 @@ class Game:
                         imax = (unit.movement // 2)
                         while imax != 0:
                             moves = list_Path[0:imax]
-                            if moves not in current_moves:
-                                current_moves.append(moves)
+                            if moves[-1] not in current_moves  and self.map.grid[moves[-1][1]][moves[-1][0]][moves[-1][2]].unit is None:
+                                current_moves.append(moves[-1])
                                 turn.move(unit.pos, moves)
                                 break
                             imax -= 1
@@ -283,15 +286,11 @@ class Game:
                         imax = unit.movement
                         while imax != 0:
                             moves = list_Path[0:imax]
-                            if moves not in current_moves:
-                                current_moves.append(moves)
+                            if moves[-1] not in current_moves  and self.map.grid[moves[-1][1]][moves[-1][0]][moves[-1][2]].unit is None:
+                                current_moves.append(moves[-1])
                                 turn.move(unit.pos, moves)
                                 break
                             imax -= 1
-
-                unit.action_attack()
-                unit.build(self, turn)
-                unit.dig()
 
             possibility = find_nearby_enemy(self.map.grid, unit.pos)
             possibility.append(posSpawnEnemie)

@@ -40,6 +40,7 @@ class Map:
         self.grid[spawn[1]][spawn[0]][spawn[2]].building = self.spawn
         self.list_building = [self.spawn]
         self.list_unit = []
+        self.tri_ressources()
             
     def isValid(self, pos):
         if pos[1]>=0 and pos[1]<self.height and pos[0]>=0 and pos[0]<self.width and self.grid[pos[1]][pos[0]][pos[2]].tiles_type not in ["A", "R"]:    
@@ -71,6 +72,18 @@ class Map:
             return pile.pop()[1]
         else:
             return None
+
+    def tri_ressources(self):
+        new_list = []
+        print(self.list_ressource)
+        dist = [distance(self.spawn.pos, ressource) for ressource in self.list_ressource]
+        print(dist)
+        for i in range(len(dist)):
+            ind = dist.index(min(dist))
+            del dist[ind]
+            new_list.append(self.list_ressource[ind])
+            del self.list_ressource[ind]
+        self.list_ressource = new_list
 
 
     def __repr__(self):
