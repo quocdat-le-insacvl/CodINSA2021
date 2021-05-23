@@ -1,6 +1,7 @@
 import json
 
 import requests
+from Controller.Danger import Danger
 import random
 
 from Controller.Turn import Turn
@@ -24,7 +25,8 @@ class Game:
         self.password = game_info["password"]
         self.map = None
         self.spawn = None
-        self.balance = 0
+        self.danger = None
+        self.balance = 300
         self.turn = 0
         self.list_enemy_unit = []
         self.list_enemy_building = []
@@ -37,6 +39,7 @@ class Game:
         return r.json()
 
     def init(self, json):
+        self.danger = Danger()
         self.spawn = (json["spawn"][0], json["spawn"][1], int(json["spawn"][2]))
         self.map = Map(json["map"], self.spawn, self)
 
@@ -101,17 +104,27 @@ class Game:
                     case.visible = False
         for visible in data["visible"]:
             pos = json.loads(visible)
+            content = data["visible"][visible].split(";")
             self.map.grid[pos[1]][pos[0]][int(pos[2])].visible = True
-
-
+            if len(content) > 2:
+                if content[1] in ["S", "C", "T", "W"]:
+                    self.map.grid[pos[1]][pos[0]][int(pos[2])].building.life = int(content[2])
+                else:
+                    self.map.grid[pos[1]][pos[0]][int(pos[2])].unit.life = int(content[2])
 
         self.balance = data["balance"]
         self.turn = data["turn"]
         # Check in case of error
         for val in data["errors"].values():
-            assert (val == []), data["errors"]
+            assert(val == []) , data["errors"]
+
+        if "visible" in data:
+            self.danger.check(self.map, data["visible"], self.map.list_unit, self.map.list_building, self.spawn)
+        pass
+
         self.show_analyse(data)
         self.analyse_visible(data)
+
 
     def show_analyse(self, data):
         print()
@@ -120,6 +133,21 @@ class Game:
         for key in data:
             print(key, data[key])
         print("-----------------------------------")
+        print("\nThreat on units: ")
+        for d in self.danger.units:
+            print(d)
+        print("\nThreat on buildings: ")
+        for d in self.danger.buildings:
+            print(d)
+        print("\nThreat on spawn: ")
+        for d in self.danger.spawn:
+            print(d)
+        print("\nThreat on resources: ")
+        for d in self.danger.resources:
+            print(d)
+
+        print("\nOur units")
+        print(self.map.list_unit)
         print()
         print()
 
@@ -137,6 +165,7 @@ class Game:
 
         """ Unit movement, attack, build and dig"""
         posSpawnEnemie = find_enemy_spawn(self.map)
+        current_moves = []
         for unit in self.map.list_unit:
             # Liste des positions autour du spawn enemie
             listPositiontoAttackSpawnEnemie = adjPos(posSpawnEnemie)
@@ -151,11 +180,10 @@ class Game:
             for pos in listPositiontoAttackSpawnEnemieExtended:
                 if tuple(unit.pos) in listPositiontoAttackSpawnEnemie:
                     break
-                if self.map.isValid(pos) and self.map.pathFinder(tuple(unit.pos), pos) is not None:
-                    posToAttack = pos
-                    break
                     
-            print("unit deplacement", listPositiontoAttackSpawnEnemie, listPositiontoAttackSpawnEnemieExtended, posToAttack)
+                if self.map.isValid(pos) and self.map.pathFinder(tuple(unit.pos), pos) is not None:
+                    if self.map.grid[pos[1]][pos[0]][pos[2]].unit is None or self.map.grid[pos[1]][pos[0]][pos[2]].unit is not None and not self.map.grid[pos[1]][pos[0]][pos[2]].unit.isOwned:
+                        posToAttack = pos
 
             #Calcule le déplacement pur aller vers cette position
             list_Path = None
@@ -165,12 +193,34 @@ class Game:
             # Déplace l'unit
             if list_Path is not None:
                 if self.map.grid[list_Path[0][1]][list_Path[0][0]][list_Path[0][2]].tiles_type=="M":
-                    turn.move(unit.pos, list_Path[0:(unit.movement//2)])
+                    imax = (unit.movement // 2)
+                    while imax != 0:
+                        moves = list_Path[0:imax]
+                        if moves not in current_moves:
+                            current_moves.append(moves)
+                            turn.move(unit.pos, moves)
+                            break
+                        imax -= 1
+
                 else:
                     if len(list_Path) > 1 and self.map.grid[list_Path[1][1]][list_Path[1][0]][list_Path[1][2]].tiles_type=="M":
-                        turn.move(unit.pos, list_Path[0:(unit.movement//2)])
+                        imax = (unit.movement // 2)
+                        while imax != 0:
+                            moves = list_Path[0:imax]
+                            if moves not in current_moves:
+                                current_moves.append(moves)
+                                turn.move(unit.pos, moves)
+                                break
+                            imax -= 1
                     else:
-                        turn.move(unit.pos, list_Path[0:unit.movement])
+                        imax = unit.movement
+                        while imax != 0:
+                            moves = list_Path[0:imax]
+                            if moves not in current_moves:
+                                current_moves.append(moves)
+                                turn.move(unit.pos, moves)
+                                break
+                            imax -= 1
 
                 unit.action_attack()
                 unit.build()

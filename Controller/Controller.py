@@ -14,7 +14,6 @@ class Controller:
 
     def __init__(self):
         self.ai_mode = "StaticAI"
-        # self.ai_mode = "StaticAI"
         self.url = "http://codinsa.insa-rennes.fr/"
         self.host = "codinsa.insa-rennes.fr"
         self.cookie = self.login()
@@ -25,8 +24,8 @@ class Controller:
 
     def login(self):
         data = {
-            "username": "CVL1",
-            "password": "+GC;GY8]dK1EYbS=ja*;U"
+            "username": "CVL3",
+            "password": ".WCX6_KO9<PVh-F9V@PmNlL?"
         }
         r = requests.post(self.url + "init", json=data)
         return r.cookies
