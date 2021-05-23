@@ -14,10 +14,13 @@ $ pip install socket
 # Multiplayer 
 
 - args : no_gui(0/1) username("user") password("pass") multiplayer(0/1) secretkey("secret"/"") room_id("room"/"") \
-    eg : 1 "CVL2" "b\\0ZgPJLU=3&#]L9k'l6" 0 "CVL" "" \
-         ^                                ^   ^     ^
-       nogui                 use multiplayer secret room_id
-    room_id => "" pour que le programme crée la room
+```
+    eg : 
+    1 "CVL2" "b\\0ZgPJLU=3&#]L9k'l6" 0 "CVL" "" \
+    ^                                ^   ^     ^
+  nogui                 use multiplayer secret room_id \
+```
+room_id => "" pour que le programme crée la room
 
 ## Documentation du sujet
 |Version | Date heure     |lien      |
