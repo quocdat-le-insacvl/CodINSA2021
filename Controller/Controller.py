@@ -7,6 +7,7 @@ from Controller.Turn import Turn
 from Model.Game import Game
 from Model.Unit import Unit
 from View.View import View
+from View.Visualization import Visualization
 
 
 class Controller:
@@ -18,6 +19,7 @@ class Controller:
         self.cookie = self.login()
         self.game = Game(self.url, self.cookie, self.ai_mode)
         self.view = View()
+        self.visualization = Visualization(self.game)
         self.run()
 
     def login(self):
@@ -53,6 +55,5 @@ class Controller:
                         turn = Turn()
                         turn.summon((self.game.spawn[0], self.game.spawn[1], 1), "V")
                         turn.send(sock, self.game.password)
-
-                    View.convert_map(self.game.map.grid)
+                    self.visualization.draw()
         self.game.leave_game()
