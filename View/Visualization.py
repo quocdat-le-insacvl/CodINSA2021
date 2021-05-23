@@ -9,7 +9,7 @@ BROWN = (135,62,35)
 LIGHTGREY = (100, 100, 100)
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
-BLUE = (0, 255, 0)
+BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
 VISIBLE_COLOR = (169,169,169)
 PROGRESS = (46, 117, 49)
@@ -77,12 +77,12 @@ class Visualization:
                 pg.draw.polygon(self.screen, BLACK, [[offset + R/2 + i*R - R2*j, R/2 + j*R2], [offset +i*R - R2*j , R + j*R2], [offset +R + i*R - R2*j, R+ j*R2]], 5)
                 if building1 is not None:
                     building1 = building1.building_type
-                    img = self.font.render(building1, True, RED)
+                    img = self.font.render(building1, True, RED if self.map.grid[j][i][0].building.isOwned else BLUE)
                     self.screen.blit(img, (x1-offset_char + 1,y1-offset_char - 5))
                     self.DrawBar((x1 - 20, y1), (40, 10), PROGRESS, self.map.grid[j][i][0].building.life / self.map.grid[j][i][0].building.max_life)
                 if unit1 is not None:
                     unit1 = unit1.unit_type
-                    img = self.font.render(unit1, True, RED)
+                    img = self.font.render(unit1, True, RED if self.map.grid[j][i][0].unit.isOwned else BLUE)
                     self.screen.blit(img, (x1-offset_char + 1, y1-offset_char - 5))
                     self.DrawBar((x1 - 20, y1), (40, 10), PROGRESS,
                                  self.map.grid[j][i][0].unit.life / self.map.grid[j][i][0].unit.max_life)
@@ -103,13 +103,13 @@ class Visualization:
                 pg.draw.polygon(self.screen, BLACK, [[offset +R/2 + i*R - j*R2, R/2+ j*R2], [offset +R*3/2 + i*R -j*R2, R/2+ j*R2], [offset +R + i*R - j*R2, R+ j*R2]], 5)
                 if building2 is not None:
                     building2 = building2.building_type
-                    img = self.font.render(building2, True, RED)
+                    img = self.font.render(building2, True, RED if self.map.grid[j][i][1].building.isOwned else BLUE)
                     self.screen.blit(img, (x2-offset_char + 1, y2-offset_char + 5))
                     self.DrawBar((x2 - 20, y2 - 9), (40, 10), PROGRESS,
                                  self.map.grid[j][i][1].building.life / self.map.grid[j][i][1].building.max_life)
                 if unit2 is not None:
                     unit2 = unit2.unit_type
-                    img = self.font.render(unit2, True, RED)
+                    img = self.font.render(unit2, True, RED if self.map.grid[j][i][1].unit.isOwned else BLUE)
                     self.screen.blit(img, (x2-offset_char + 1,y2 - offset_char + 5))
                     self.DrawBar((x2 - 20, y2 - 9), (40, 10), PROGRESS,
                                  self.map.grid[j][i][1].unit.life / self.map.grid[j][i][1].unit.max_life)

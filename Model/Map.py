@@ -36,9 +36,8 @@ class Map:
                 y_dimension.append(z_dimension)
             self.grid.append(y_dimension)
             i += 1
-        self.spawn = Building((spawn[0], spawn[1], spawn[2]), "S")
+        self.spawn = Building((spawn[0], spawn[1], spawn[2]), "S", True)
         self.grid[spawn[1]][spawn[0]][spawn[2]].building = self.spawn
-        self.grid[spawn[1]][spawn[0]][spawn[2]].owned = True
         self.list_building = [self.spawn]
         self.list_unit = []
             

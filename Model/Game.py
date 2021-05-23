@@ -102,7 +102,7 @@ class Game:
             pass
         for summoned in data["summoned"]:
             if summoned[2]:
-                unit = Unit(summoned[0], summoned[1])
+                unit = Unit(summoned[0], summoned[1], True)
                 self.map.list_unit.append(unit)
                 # self.map.list_unit[unit] = summoned[0]
                 self.map.grid[summoned[0][1]][summoned[0][0]][int(summoned[0][2])].unit = unit
