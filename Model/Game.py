@@ -190,6 +190,29 @@ class Game:
         posSpawnEnemie = find_enemy_spawn(self.map)
         current_moves = []
         for unit in self.map.list_unit:
+            
+            # posToAttack = None
+            # posToChecks = [posSpawnEnemie]
+            # i=0
+            # while posToAttack is None:
+                # i += 1
+                # if i > 3:
+                    # break
+                # endList = []
+                # for posToCheck in posToChecks:
+                    # if posToAttack is None:
+                        # for newpos in adjPos(posToCheck):
+                            # endList.append(newpos)
+                            
+                            # if self.map.isValid(newpos) and self.map.pathFinder(tuple(unit.pos), newpos) is not None:
+                                # if self.map.grid[newpos[1]][newpos[0]][newpos[2]].unit is None or self.map.grid[newpos[1]][newpos[0]][newpos[2]].unit is not None and not self.map.grid[newpos[1]][newpos[0]][newpos[2]].unit.isOwned:
+                                    # posToAttack = newpos
+                                    # break
+                # print(endList)
+                # posToChecks = endList
+                
+            # print(unit.pos, posToAttack)
+            
             # Liste des positions autour du spawn enemie
             listPositiontoAttackSpawnEnemie = adjPos(posSpawnEnemie)
             listPositiontoAttackSpawnEnemieExtended = listPositiontoAttackSpawnEnemie.copy()
@@ -203,11 +226,13 @@ class Game:
             for pos in listPositiontoAttackSpawnEnemieExtended:
                 if tuple(unit.pos) in listPositiontoAttackSpawnEnemie:
                     break
-
+                    
                 if self.map.isValid(pos) and self.map.pathFinder(tuple(unit.pos), pos) is not None:
                     if self.map.grid[pos[1]][pos[0]][pos[2]].unit is None or self.map.grid[pos[1]][pos[0]][pos[2]].unit is not None and not self.map.grid[pos[1]][pos[0]][pos[2]].unit.isOwned:
                         posToAttack = pos
-
+                        break
+                        
+            #print("pathfinder",unit.pos, listPositiontoAttackSpawnEnemie, listPositiontoAttackSpawnEnemieExtended, posToAttack)
             #Calcule le déplacement pur aller vers cette position
             list_Path = None
             if posToAttack is not None:

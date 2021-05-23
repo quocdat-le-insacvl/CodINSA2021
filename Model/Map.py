@@ -44,7 +44,8 @@ class Map:
     def isValid(self, pos):
         if pos[1]>=0 and pos[1]<self.height and pos[0]>=0 and pos[0]<self.width and self.grid[pos[1]][pos[0]][pos[2]].tiles_type not in ["A", "R"]:    
             if self.grid[pos[1]][pos[0]][pos[2]].building is None:
-                return True
+                if self.grid[pos[1]][pos[0]][pos[2]].unit is None:
+                    return True
         return False
 
     def pathFinder(self, start, finish):
