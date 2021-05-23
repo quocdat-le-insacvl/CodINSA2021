@@ -28,9 +28,9 @@ class Map:
                 z_dimension.append(Case(row[j], (j//2, i, 0), None, game))
                 z_dimension.append(Case(row[j+1], ((j+1)//2, i, 1), None, game))
                 # Detect ressource
-                if  row[j] == 'R':
+                if row[j] == 'R':
                     self.list_ressource.append((j//2, i, 0))
-                if  row[j+1] == 'R':
+                if row[j+1] == 'R':
                     self.list_ressource.append(((j+1)//2, i, 1))
                 j += 2
                 y_dimension.append(z_dimension)
@@ -45,8 +45,7 @@ class Map:
     def isValid(self, pos):
         if pos[1]>=0 and pos[1]<self.height and pos[0]>=0 and pos[0]<self.width and self.grid[pos[1]][pos[0]][pos[2]].tiles_type not in ["A", "R"]:    
             if self.grid[pos[1]][pos[0]][pos[2]].building is None:
-                if self.grid[pos[1]][pos[0]][pos[2]].unit is None:
-                    return True
+                return True
         return False
 
     def pathFinder(self, start, finish):

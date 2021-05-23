@@ -53,6 +53,14 @@ def pos_to_str(pos: tuple):
     return "[{0},{1},{2}]".format(pos[0], pos[1], "true" if pos[2] else "false")
 
 
+def str_to_pos(pos):
+    pos = pos.strip("[]")
+    p = pos.split()
+    for i in range(len(p)):
+        p[i] = p[i].strip(",")
+    return int(p[0]), int(p[1]), (p[2] == "true")
+
+
 def distance(pos1, pos2):
     return abs(pos2[0] - pos1[0]) + abs(pos2[1] - pos1[1]) + abs(
         pos2[1] - pos1[1] + pos1[0] - pos2[0] + pos2[2] - pos1[2])
