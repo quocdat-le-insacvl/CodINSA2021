@@ -100,10 +100,10 @@ def get_tile_around(grid, pos, type):
         if grid[pos[1]][pos[0] + 1][0].tiles_type == type:
             list.append((pos[0], pos[1], 0))
     else:
-        if grid[pos[1]][pos[0] - 1][0].tiles_type == type:
+        if grid[pos[1]][pos[0] - 1][1].tiles_type == type:
             list.append((pos[0] - 1, pos[1], 1))
-        if grid[pos[1] + 1][pos[0]][0].tiles_type == type:
+        if grid[pos[1] + 1][pos[0]][1].tiles_type == type:
             list.append((pos[0], pos[1] + 1, 1))
-        if grid[pos[1]][pos[0]][0].tiles_type == type:
+        if grid[pos[1]][pos[0]][1].tiles_type == type:
             list.append((pos[0], pos[1], 1))
     return list
