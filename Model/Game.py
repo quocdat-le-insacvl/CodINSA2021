@@ -8,7 +8,7 @@ from Controller.Turn import Turn
 from Model.Map import Map
 from Model.Unit import Unit
 from Model.Building import Building
-from Controller.Util import find_enemy_spawn, find_nearby_enemy
+from Controller.Util import find_enemy_spawn, find_nearby_enemy, pos_to_str
 from Controller.Util import adjPos
 
 
@@ -88,7 +88,6 @@ class Game:
         print("Enemy building: ")
         print(self.list_enemy_building)
 
-
     def analyse(self, data):
         try:
             for killed in data["killed"]:
@@ -120,34 +119,42 @@ class Game:
                 # self.map.list_unit[unit] = summoned[0]
                 self.map.grid[summoned[0][1]][summoned[0][0]][int(summoned[0][2])].unit = unit
 
-
         for line in self.map.grid:
             for row in line:
                 for case in row:
                     case.visible = False
+                    if not pos_to_str(case.pos) in data["visible"]:
+                        if case.unit is not None and not case.unit.isOwned:
+                            if case.building is not None and not case.building.isOwned:
+                                case.unit = None
         for visible in data["visible"]:
             pos = json.loads(visible)
             content = data["visible"][visible].split(";")
             self.map.grid[pos[1]][pos[0]][int(pos[2])].visible = True
             if len(content) > 2:
                 if content[1] in ["S", "C", "T", "W"]:
+                    if self.map.grid[pos[1]][pos[0]][int(pos[2])].building is None:
+                        self.map.grid[pos[1]][pos[0]][int(pos[2])].building = Building((pos[0], pos[1], bool(pos[2])),
+                                                                                       content[1])
                     self.map.grid[pos[1]][pos[0]][int(pos[2])].building.life = int(content[2])
                 else:
-                    self.map.grid[pos[1]][pos[0]][int(pos[2])].unit.life = int(content[2])
+                    if content[1] in ["S", "C", "T", "W"]:
+                        if self.map.grid[pos[1]][pos[0]][int(pos[2])].unit is None:
+                            self.map.grid[pos[1]][pos[0]][int(pos[2])].unit = Unit(
+                                (pos[0], pos[1], bool(pos[2])), content[1])
+                        self.map.grid[pos[1]][pos[0]][int(pos[2])].unit.life = int(content[2])
 
         self.balance = data["balance"]
         self.turn = data["turn"]
         # Check in case of error
         for val in data["errors"].values():
-            assert(val == []) , data["errors"]
+            assert (val == []), data["errors"]
 
         if "visible" in data:
             self.danger.check(self.map, data["visible"], self.map.list_unit, self.map.list_building, self.spawn)
-        pass
 
         self.show_analyse(data)
         self.analyse_visible(data)
-
 
     def show_analyse(self, data):
         print()
@@ -190,29 +197,29 @@ class Game:
         posSpawnEnemie = find_enemy_spawn(self.map)
         current_moves = []
         for unit in self.map.list_unit:
-            
+
             # posToAttack = None
             # posToChecks = [posSpawnEnemie]
             # i=0
             # while posToAttack is None:
-                # i += 1
-                # if i > 3:
-                    # break
-                # endList = []
-                # for posToCheck in posToChecks:
-                    # if posToAttack is None:
-                        # for newpos in adjPos(posToCheck):
-                            # endList.append(newpos)
-                            
-                            # if self.map.isValid(newpos) and self.map.pathFinder(tuple(unit.pos), newpos) is not None:
-                                # if self.map.grid[newpos[1]][newpos[0]][newpos[2]].unit is None or self.map.grid[newpos[1]][newpos[0]][newpos[2]].unit is not None and not self.map.grid[newpos[1]][newpos[0]][newpos[2]].unit.isOwned:
-                                    # posToAttack = newpos
-                                    # break
-                # print(endList)
-                # posToChecks = endList
-                
+            # i += 1
+            # if i > 3:
+            # break
+            # endList = []
+            # for posToCheck in posToChecks:
+            # if posToAttack is None:
+            # for newpos in adjPos(posToCheck):
+            # endList.append(newpos)
+
+            # if self.map.isValid(newpos) and self.map.pathFinder(tuple(unit.pos), newpos) is not None:
+            # if self.map.grid[newpos[1]][newpos[0]][newpos[2]].unit is None or self.map.grid[newpos[1]][newpos[0]][newpos[2]].unit is not None and not self.map.grid[newpos[1]][newpos[0]][newpos[2]].unit.isOwned:
+            # posToAttack = newpos
+            # break
+            # print(endList)
+            # posToChecks = endList
+
             # print(unit.pos, posToAttack)
-            
+
             # Liste des positions autour du spawn enemie
             listPositiontoAttackSpawnEnemie = adjPos(posSpawnEnemie)
             listPositiontoAttackSpawnEnemieExtended = listPositiontoAttackSpawnEnemie.copy()
@@ -226,21 +233,22 @@ class Game:
             for pos in listPositiontoAttackSpawnEnemieExtended:
                 if tuple(unit.pos) in listPositiontoAttackSpawnEnemie:
                     break
-                    
+
                 if self.map.isValid(pos) and self.map.pathFinder(tuple(unit.pos), pos) is not None:
-                    if self.map.grid[pos[1]][pos[0]][pos[2]].unit is None or self.map.grid[pos[1]][pos[0]][pos[2]].unit is not None and not self.map.grid[pos[1]][pos[0]][pos[2]].unit.isOwned:
+                    if self.map.grid[pos[1]][pos[0]][pos[2]].unit is None or self.map.grid[pos[1]][pos[0]][
+                        pos[2]].unit is not None and not self.map.grid[pos[1]][pos[0]][pos[2]].unit.isOwned:
                         posToAttack = pos
                         break
-                        
-            #print("pathfinder",unit.pos, listPositiontoAttackSpawnEnemie, listPositiontoAttackSpawnEnemieExtended, posToAttack)
-            #Calcule le déplacement pur aller vers cette position
+
+            # print("pathfinder",unit.pos, listPositiontoAttackSpawnEnemie, listPositiontoAttackSpawnEnemieExtended, posToAttack)
+            # Calcule le déplacement pur aller vers cette position
             list_Path = None
             if posToAttack is not None:
                 list_Path = self.map.pathFinder(tuple(unit.pos), posToAttack)
 
             # Déplace l'unit
             if list_Path is not None:
-                if self.map.grid[list_Path[0][1]][list_Path[0][0]][list_Path[0][2]].tiles_type=="M":
+                if self.map.grid[list_Path[0][1]][list_Path[0][0]][list_Path[0][2]].tiles_type == "M":
                     imax = (unit.movement // 2)
                     while imax != 0:
                         moves = list_Path[0:imax]
@@ -250,7 +258,8 @@ class Game:
                             break
                         imax -= 1
                 else:
-                    if len(list_Path) > 1 and self.map.grid[list_Path[1][1]][list_Path[1][0]][list_Path[1][2]].tiles_type=="M":
+                    if len(list_Path) > 1 and self.map.grid[list_Path[1][1]][list_Path[1][0]][
+                        list_Path[1][2]].tiles_type == "M":
                         imax = (unit.movement // 2)
                         while imax != 0:
                             moves = list_Path[0:imax]

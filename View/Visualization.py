@@ -132,7 +132,6 @@ class Visualization:
 
 
         # pg.draw.polygon(self.screen, RED, [[100, 100], [200, 200]], 5)
-
         pg.display.flip()
 
 
