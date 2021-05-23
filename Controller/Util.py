@@ -39,27 +39,14 @@ def find_resources(game_map):
     return resources
 
 
-def find_enemy_spawn(game_map, spawn):
-    x = 0
-    y = 0
-    down = 0
-    for c in game_map:
-        if c == " ":
-            continue
-        if c == "\n":
-            y = y + 1
-            x = 0
-            down = 0
-            continue
-        if c == "S":
-            if x == spawn[0] and y == spawn[1] and down == spawn[2]:
-                continue
-            return x, y, down, "S"
-        if down == 0:
-            down = 1
-        else:
-            down = 0
-            x = x + 1
+def find_enemy_spawn(gameMap):
+    for x in range(len(gameMap.grid)):
+        for y in range(len(gameMap.grid[x])):
+            for z in range(len(gameMap.grid[x][y])):
+                if gameMap.grid[x][y][z].building is not None:
+                    if gameMap.grid[x][y][z].building.building_type == "S":
+                        if gameMap.grid[x][y][z].building.pos is not gameMap.spawn.pos:
+                            return gameMap.grid[x][y][z].building.pos
 
 
 def pos_to_str(pos: tuple):
@@ -68,7 +55,7 @@ def pos_to_str(pos: tuple):
 
 def distance(pos1, pos2):
     return abs(pos2[0] - pos1[0]) + abs(pos2[1] - pos1[1]) + abs(
-        pos2[0] - pos1[0] + pos1[1] - pos2[1] + pos2[2] - pos1[2])
+        pos2[1] - pos1[1] + pos1[0] - pos2[0] + pos2[2] - pos1[2])
 
 
 def adjPos(pos):

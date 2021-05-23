@@ -1,5 +1,6 @@
 import json
 import socket
+import time
 
 import requests
 
@@ -38,14 +39,17 @@ class Controller:
             sock.connect((self.host, self.game.port))
             flag = True
             while flag:
-                data = sock.recv(20480)
+                data = sock.recv(4096000)
+                while data[-1]!=10:
+                    data += sock.recv(4096000)
+                
                 if data is not None:
                     try:
                         data = json.loads(data.decode("UTF-8"))
                     except Exception as E:
                         print(data)
                         print(str(E))
-                        print("On a perdu!")
+                        print("Une erreur est survenue!")
                         break 
 
 
@@ -63,6 +67,7 @@ class Controller:
                                 """ On récupère le jeu de l'ia puis on joue notre tour"""
                                 turn = self.game.new_turn()
                                 turn.send(sock, self.game.password)
+                               
                                 # turn = Turn()
                                 # turn.summon((self.game.spawn[0], self.game.spawn[1], 1), "V")
                                 # turn.send(sock, self.game.password)

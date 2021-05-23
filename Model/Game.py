@@ -1,10 +1,13 @@
 import json
 
 import requests
+import random
 
 from Controller.Turn import Turn
 from Model.Map import Map
 from Model.Unit import Unit
+from Controller.Util import find_enemy_spawn
+from Controller.Util import adjPos
 
 
 class Game:
@@ -40,6 +43,7 @@ class Game:
                 dep = moved[0]
                 arr = moved[1][-1]
                 self.map.grid[arr[1]][arr[0]][arr[2]].unit = self.map.grid[dep[1]][dep[0]][dep[2]].unit
+                self.map.grid[arr[1]][arr[0]][arr[2]].unit.pos = [arr[0], arr[1], arr[2]]
                 self.map.grid[dep[1]][dep[0]][dep[2]].unit = None
 
         for attacked in data["attacked"]:
@@ -94,11 +98,16 @@ class Game:
         turn = Turn()
 
         """ Unit movement, attack, build and dig"""
+        posSpawnEnemie = find_enemy_spawn(self.map)
         for unit in self.map.list_unit:
-            turn.move(unit.pos, unit.move(self.map.grid))
-            unit.action_attack()
-            unit.build()
-            unit.dig()
+            list_Path = self.map.pathFinder(tuple(unit.pos), adjPos(posSpawnEnemie)[random.randint(0,2)])
+            print("deplacement", unit.pos, list_Path)
+            if list_Path is not None:
+                print("deplacement", unit.pos, list_Path)
+                turn.move(unit.pos, list_Path[0:1])
+                unit.action_attack()
+                unit.build()
+                unit.dig()
 
         for building in self.map.list_building:
             new_unit = building.create_unit()
