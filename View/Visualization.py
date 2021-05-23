@@ -10,9 +10,10 @@ LIGHTGREY = (100, 100, 100)
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
 YELLOW = (255, 255, 0)
+VISIBLE_COLOR = (169,169,169)
 
 # game settings
-WIDTH = 1024+ 800   # 16 * 64 or 32 * 32 or 64 * 16
+WIDTH = 1024 + 250   # 16 * 64 or 32 * 32 or 64 * 16
 HEIGHT = 768   # 16 * 48 or 32 * 24 or 64 * 12
 FPS = 30
 TITLE = "Visualization"
@@ -54,13 +55,17 @@ class Visualization:
                 color0 = self.dict_color[case0]
                 color1 = self.dict_color[case1]
                 x1, y1 = [offset + R/2 + i*R - R2*j, R/2 + j*R2]
-                x1 += offset +i*R - R2*j 
+                x1 += offset +i*R - R2*j
                 y1 += R + j*R2
                 x1 += offset +R + i*R - R2*j
                 y1 += R+ j*R2
                 x1 /= 3
                 y1 /= 3
-                
+
+                if self.map.grid[j][i][0].visible:
+                    pg.draw.polygon(self.screen, VISIBLE_COLOR, [[x1 + 30, y1 + 10], [x1 - 30, y1 + 10], [x1, y1 - 20]])
+
+
                 pg.draw.circle(self.screen, color0, (x1,y1), circle_rate)
                 pg.draw.polygon(self.screen, BLACK, [[offset + R/2 + i*R - R2*j, R/2 + j*R2], [offset +i*R - R2*j , R + j*R2], [offset +R + i*R - R2*j, R+ j*R2]], 5)
                 if building1 is not None:
@@ -72,7 +77,7 @@ class Visualization:
                     img = self.font.render(unit1, True, RED)
                     self.screen.blit(img, (x1-offset_char,y1-offset_char))
 
-                
+
                 x2, y2 = [offset +R/2 + i*R - j*R2, R/2+ j*R2]
                 x2 += offset +R*3/2 + i*R -j*R2
                 y2 += R/2+ j*R2
@@ -80,6 +85,10 @@ class Visualization:
                 y2 += R+ j*R2
                 x2 /= 3
                 y2 /= 3
+
+                if self.map.grid[j][i][1].visible:
+                    pg.draw.polygon(self.screen, VISIBLE_COLOR, [[x2 + 30, y2 - 10], [x2 - 30, y2 - 10], [x2, y2 + 20]])
+
                 pg.draw.circle(self.screen, color1, (x2,y2), circle_rate)
                 pg.draw.polygon(self.screen, BLACK, [[offset +R/2 + i*R - j*R2, R/2+ j*R2], [offset +R*3/2 + i*R -j*R2, R/2+ j*R2], [offset +R + i*R - j*R2, R+ j*R2]], 5)
                 if building2 is not None:
@@ -90,6 +99,7 @@ class Visualization:
                     unit2 = unit2.unit_type
                     img = self.font.render(unit2, True, RED)
                     self.screen.blit(img, (x2-offset_char,y2-offset_char))
+
 
                 # print balance 
                 img = self.big_font.render("balance : " + str(self.game.balance), True, BLACK)

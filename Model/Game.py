@@ -1,3 +1,5 @@
+import json
+
 import requests
 
 from Controller.Turn import Turn
@@ -51,8 +53,14 @@ class Game:
                 self.map.grid[summoned[0][1]][summoned[0][0]][int(summoned[0][2])].unit = unit
         for killed in data["killed"]:
             pass
-        
-        # for visible in data["visible"]:
+
+        for line in self.map.grid:
+            for row in line:
+                for case in row:
+                    case.visible = False
+        for visible in data["visible"]:
+            pos = json.loads(visible)
+            self.map.grid[pos[1]][pos[0]][int(pos[2])].visible = True
 
         self.balance = data["balance"]
         self.turn = data["turn"]
