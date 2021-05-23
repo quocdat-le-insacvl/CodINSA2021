@@ -19,7 +19,7 @@ class Map:
         i = 0
         for row in rows:
             row = row.split(" ")
-            self.width = len(row)
+            self.width = len(row) // 2
             y_dimension = []
             j = 0
             while j < len(row):
