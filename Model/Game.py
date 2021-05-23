@@ -179,13 +179,19 @@ class Game:
         for unit in self.map.list_unit:
             # Liste des positions autour du spawn enemie
             listPositiontoAttackSpawnEnemie = adjPos(posSpawnEnemie)
+            listPositiontoAttackSpawnEnemieExtended = listPositiontoAttackSpawnEnemie.copy()
+            for newpos in listPositiontoAttackSpawnEnemie.copy():
+                for newposadd in adjPos(newpos):
+                    if self.map.isValid(newposadd):
+                        listPositiontoAttackSpawnEnemieExtended.append(newposadd)
 
             # Récuppère une position d'attaque disponible
             posToAttack = None
-            for pos in listPositiontoAttackSpawnEnemie:
+            for pos in listPositiontoAttackSpawnEnemieExtended:
                 if tuple(unit.pos) in listPositiontoAttackSpawnEnemie:
                     break
-                if self.map.isValid(pos):
+                    
+                if self.map.isValid(pos) and self.map.pathFinder(tuple(unit.pos), pos) is not None:
                     if self.map.grid[pos[1]][pos[0]][pos[2]].unit is None or self.map.grid[pos[1]][pos[0]][pos[2]].unit is not None and not self.map.grid[pos[1]][pos[0]][pos[2]].unit.isOwned:
                         posToAttack = pos
 
