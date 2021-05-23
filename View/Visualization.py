@@ -14,8 +14,8 @@ VISIBLE_COLOR = (169,169,169)
 PROGRESS = (46, 117, 49)
 
 # game settings
-WIDTH = 1024 + 250   # 16 * 64 or 32 * 32 or 64 * 16
-HEIGHT = 768   # 16 * 48 or 32 * 24 or 64 * 12
+WIDTH = 1024 + 600   # 16 * 64 or 32 * 32 or 64 * 16
+HEIGHT = 768 + 300  # 16 * 48 or 32 * 24 or 64 * 12
 FPS = 30
 TITLE = "Visualization"
 BGCOLOR = DARKGREY
@@ -47,7 +47,7 @@ class Visualization:
         height = self.map.height
         R = 60
         R2 = R/2
-        offset = 600
+        offset = 800
         circle_rate = 12
         offset_char = 10
         print(self.game.list_enemy_unit)

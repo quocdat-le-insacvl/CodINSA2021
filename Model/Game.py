@@ -137,7 +137,7 @@ class Game:
 
         """ Unit movement, attack, build and dig"""
         posSpawnEnemie = find_enemy_spawn(self.map)
-        for unit in self.map.list_unit:
+        for unit in self.list_unit:
             # Liste des positions autour du spawn enemie
             listPositiontoAttackSpawnEnemie = adjPos(posSpawnEnemie)
 
