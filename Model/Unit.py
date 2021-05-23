@@ -1,3 +1,6 @@
+import random
+
+
 class Unit:
 
     def __init__(self, pos, unit_type):
@@ -36,3 +39,30 @@ class Unit:
 
     def get_letter(self):
         return self.unit_type
+
+    def move(self, grid):
+        i = self.movement
+        possible_move = [[1,0,0], [0,-1,0], [0,0,0]] if self.pos[2] else [[-1,0,1],[0,1,1],[0,0,1]]
+        moves = []
+        last_pos = self.pos
+        while i != 0:
+            choice = random.choice(possible_move)
+            pos = [last_pos[0] + choice[0], last_pos[1] + choice[1], choice[2]]
+            cost = grid[pos[1]][pos[0]][pos[2]].cost
+            if i >= cost:
+                moves.append(pos)
+                last_pos = pos
+                i -= cost
+        return moves
+
+    def move_complex(self, grid):
+        pass
+
+    def action_attack(self):
+        pass
+
+    def build(self):
+        pass
+
+    def dig(self):
+        pass

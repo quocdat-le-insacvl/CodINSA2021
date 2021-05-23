@@ -28,6 +28,7 @@ class Visualization:
         self.game = game
         self.dict_color =  {'F':  GREEN, 'A' : BROWN, 'R': YELLOW, 'M': DARKGREY}
         self.font = pg.font.SysFont(None, 35)
+        self.big_font = pg.font.SysFont(None, 50)
         # img = font.render(text, True, RED)
 
     def draw(self):
@@ -87,8 +88,16 @@ class Visualization:
                     self.screen.blit(img, (x2-offset_char,y2-offset_char))
                 if unit2 is not None:
                     unit2 = unit2.unit_type
-                    img = self.font.render(unit1, True, RED)
-                    self.screen.blit(img, (x1-offset_char,y1-offset_char))
+                    img = self.font.render(unit2, True, RED)
+                    self.screen.blit(img, (x2-offset_char,y2-offset_char))
+
+                # print balance 
+                img = self.big_font.render("balance : " + str(self.game.balance), True, BLACK)
+                self.screen.blit(img, (0,0))
+                # print turn
+                img = self.big_font.render("turn : " + str(self.game.turn), True, BLACK)
+                self.screen.blit(img, (0,60))
+
 
         # pg.draw.polygon(self.screen, RED, [[100, 100], [200, 200]], 5)
 

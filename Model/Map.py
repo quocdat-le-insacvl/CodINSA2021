@@ -14,23 +14,27 @@ class Map:
         rows = (json_map.splitlines())
         self.height = len(rows)
         self.grid = []
-        j = 0
+        self.list_unit = []
+        self.list_building = []
+        i = 0
         for row in rows:
             row = row.split(" ")
             self.width = len(row) // 2
             y_dimension = []
-            i = 0
-            while i < len(row):
-                z_dimension = [Case(row[i], (j, i // 2, 0), None), Case(row[i + 1], (j, i // 2, 1), None)]
-                i += 2
+            j = 0
+            while j < len(row):
+                z_dimension = []
+                z_dimension.append(Case(row[j], (j//2, i, 0), None))
+                z_dimension.append(Case(row[j+1], ((j+1)//2, i, 1), None))
+                j += 2
                 y_dimension.append(z_dimension)
             self.grid.append(y_dimension)
-            j += 1
-
-        self.grid[spawn[1]][spawn[0]][spawn[2]].building = Building((spawn[0], spawn[1], spawn[2]), "S")
+            i += 1
+        self.spawn = Building((spawn[0], spawn[1], spawn[2]), "S")
+        self.grid[spawn[1]][spawn[0]][spawn[2]].building = self.spawn
         self.grid[spawn[1]][spawn[0]][spawn[2]].owned = True
-        View.convert_map(self.grid)
-
+        self.list_building = [self.spawn]
+            
     def isValid(self, pos):
         return pos[0]>=0 and pos[0]<self.height and pos[1]>=0 and pos[1]<self.width and self.grid[pos[0]][pos[1]][pos[2]].tiles_type !="A" and self.grid[pos[0]][pos[1]][pos[2]].tiles_type !="R"
 

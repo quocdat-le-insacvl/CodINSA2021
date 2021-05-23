@@ -45,15 +45,25 @@ class Controller:
                     """ Début du jeu """
                     if "game" in data and data["game"] == "begin":
                         self.game.init(data)
-                        print(self.game.map.grid[1][8][1].pos)
-                        print(self.game.map.pathFinder(self.game.map.grid[1][8][1].pos, self.game.map.grid[10][8][1].pos))
-                    else:
-                        # Analyse data receive
-                        self.game.analyse(data)
-
-                    if data["your_turn"]:
-                        turn = Turn()
-                        turn.summon((self.game.spawn[0], self.game.spawn[1], 1), "V")
+                        turn = self.game.new_turn()
                         turn.send(sock, self.game.password)
+                        # print(self.game.map.grid[1][8][1].pos)
+                        # print(self.game.map.pathFinder(self.game.map.grid[1][8][1].pos, self.game.map.grid[10][8][1].pos))
+                    else:
+                        print(data)
+                        if "your_turn" in data :
+                            if data["your_turn"]:
+                                """ On récupère le jeu de l'ia puis on joue notre tour"""
+                                turn = self.game.new_turn()
+                                turn.send(sock, self.game.password)
+                                # turn = Turn()
+                                # turn.summon((self.game.spawn[0], self.game.spawn[1], 1), "V")
+                                # turn.send(sock, self.game.password)
+                            else:
+                                """ On récupère les infos de notre tour """
+                                self.game.analyse(data)
+                        else:
+                            flag = False
+
                     self.visualization.draw()
         self.game.leave_game()
