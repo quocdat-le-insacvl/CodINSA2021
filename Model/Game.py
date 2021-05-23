@@ -1,6 +1,7 @@
 import json
 
 import requests
+from Controller.Danger import Danger
 import random
 
 from Controller.Turn import Turn
@@ -24,7 +25,8 @@ class Game:
         self.password = game_info["password"]
         self.map = None
         self.spawn = None
-        self.balance = 0
+        self.danger = None
+        self.balance = 300
         self.turn = 0
         self.list_enemy_unit = []
         self.list_enemy_building = []
@@ -37,6 +39,7 @@ class Game:
         return r.json()
 
     def init(self, json):
+        self.danger = Danger()
         self.spawn = (json["spawn"][0], json["spawn"][1], int(json["spawn"][2]))
         self.map = Map(json["map"], self.spawn, self)
 
@@ -113,9 +116,15 @@ class Game:
         self.turn = data["turn"]
         # Check in case of error
         for val in data["errors"].values():
-            assert (val == []), data["errors"]
+            assert(val == []) , data["errors"]
+
+        if "visible" in data:
+            self.danger.check(self.map, data["visible"], self.map.list_unit, self.map.list_building, self.spawn)
+        pass
+
         self.show_analyse(data)
         self.analyse_visible(data)
+
 
     def show_analyse(self, data):
         print()
@@ -124,6 +133,21 @@ class Game:
         for key in data:
             print(key, data[key])
         print("-----------------------------------")
+        print("\nThreat on units: ")
+        for d in self.danger.units:
+            print(d)
+        print("\nThreat on buildings: ")
+        for d in self.danger.buildings:
+            print(d)
+        print("\nThreat on spawn: ")
+        for d in self.danger.spawn:
+            print(d)
+        print("\nThreat on resources: ")
+        for d in self.danger.resources:
+            print(d)
+
+        print("\nOur units")
+        print(self.map.list_unit)
         print()
         print()
 
