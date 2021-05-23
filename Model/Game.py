@@ -138,12 +138,32 @@ class Game:
         """ Unit movement, attack, build and dig"""
         posSpawnEnemie = find_enemy_spawn(self.map)
         for unit in self.map.list_unit:
-            list_Path = self.map.pathFinder(tuple(unit.pos), adjPos(posSpawnEnemie)[random.randint(0,2)])
+            # Liste des positions autour du spawn enemie
+            listPositiontoAttackSpawnEnemie = adjPos(posSpawnEnemie)
+            
+            # Récuppère une position d'attaque disponible
+            posToAttack = None
+            for pos in listPositiontoAttackSpawnEnemie:
+                if tuple(unit.pos) in listPositiontoAttackSpawnEnemie:
+                    break
+                if self.map.isValid(pos):
+                    posToAttack = pos
+            
+            #Calcule le déplacement pur aller vers cette position
+            list_Path = None
+            if posToAttack is not None:
+                list_Path = self.map.pathFinder(tuple(unit.pos), posToAttack)
+            
+            # Déplace l'unit
             if list_Path is not None:
                 if self.map.grid[list_Path[0][1]][list_Path[0][0]][list_Path[0][2]].tiles_type=="M":
                     turn.move(unit.pos, list_Path[0:(unit.movement//2)])
                 else:
-                    turn.move(unit.pos, list_Path[0:unit.movement])
+                    if len(list_Path) > 1 and self.map.grid[list_Path[1][1]][list_Path[1][0]][list_Path[1][2]].tiles_type=="M":
+                        turn.move(unit.pos, list_Path[0:(unit.movement//2)])
+                    else:
+                        turn.move(unit.pos, list_Path[0:unit.movement])
+                    
                 unit.action_attack()
                 unit.build()
                 unit.dig()
