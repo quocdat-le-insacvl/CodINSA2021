@@ -118,9 +118,13 @@ class Game:
             if build[2] :
                 self.map.list_building.append(Building(build[1], "C"))
 
+        flag = True
         for summoned in data["summoned"]:
             if summoned[2]:
                 unit = Unit(summoned[0], summoned[1], True)
+                if summoned[1] == "V" and flag:
+                    unit.focus = "Mined"
+                    flag = False
                 self.map.list_unit.append(unit)
                 # self.map.list_unit[unit] = summoned[0]
                 self.map.grid[summoned[0][1]][summoned[0][0]][int(summoned[0][2])].unit = unit

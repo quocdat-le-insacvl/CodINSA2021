@@ -8,7 +8,7 @@ class Unit:
         self.pos = pos
         self.unit_type = unit_type
         self.isOwned = owned
-        self.focus = "Mined"
+        self.focus = "Spawn"
         if unit_type == "V":
             self.price = 20
             self.life = 20
@@ -74,16 +74,19 @@ class Unit:
         d = ["C","T"]
         c = [250, 70]
         for pos in list_adj:
-            case = game.map.grid[pos[1]][pos[0]][pos[2]]
-            print(case.tiles_type)
-            if case.unit is not None: continue
-            if case.building is not None: continue
-            if case.tiles_type in ["F", "M"] and any([distance(pos, j.pos) for j in game.map.list_building]):
-                if game.balance > 1000:
-                    i = random.randrange(1)
-                    turn.build(self.pos, list(pos), d[i])
-                    game.balance -= c[i]
-                    print("Built!!!!", pos)
+            xmax = len(game.map.grid)
+            ymax = len(game.map.grid[0])
+            if 0 <= pos[1] < xmax and 0 <= pos[0] < ymax:
+                case = game.map.grid[pos[1]][pos[0]][pos[2]]
+                print(case.tiles_type)
+                if case.unit is not None: continue
+                if case.building is not None: continue
+                if case.tiles_type in ["F", "M"] and any([distance(pos, j.pos) for j in game.map.list_building]):
+                    if game.balance > 1000:
+                        i = random.randrange(1)
+                        turn.build(self.pos, list(pos), d[i])
+                        game.balance -= c[i]
+                        print("Built!!!!", pos)
 
     def dig(self):
         pass
