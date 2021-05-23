@@ -101,9 +101,13 @@ class Game:
                     case.visible = False
         for visible in data["visible"]:
             pos = json.loads(visible)
+            content = data["visible"][visible].split(";")
             self.map.grid[pos[1]][pos[0]][int(pos[2])].visible = True
-
-
+            if len(content) > 2:
+                if content[1] in ["S", "C", "T", "W"]:
+                    self.map.grid[pos[1]][pos[0]][int(pos[2])].building.life = int(content[2])
+                else:
+                    self.map.grid[pos[1]][pos[0]][int(pos[2])].unit.life = int(content[2])
 
         self.balance = data["balance"]
         self.turn = data["turn"]
