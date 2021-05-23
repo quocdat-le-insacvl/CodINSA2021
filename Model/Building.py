@@ -8,11 +8,13 @@ class Building:
             self.price = None
             self.life = 240
             self.score_killed = 100
+            self.unit = ["V"]
         elif building_type == "C":
             self.can_attack = False
             self.price = 250
             self.life = 160
             self.score_killed = 60
+            self.unit = ["L", "H"]
         elif building_type == "T":
             self.can_attack = True
             self.price = 70
@@ -20,11 +22,13 @@ class Building:
             self.life = 60
             self.attack_distance = 2
             self.score_killed = 30
+            self.unit = []
         elif building_type == "W":
             self.can_attack = False
             self.price = 30
             self.life = 120
             self.score_killed = 15
+            self.unit = []
         else: 
             assert "Error : Wrong building type!"
 
@@ -38,8 +42,11 @@ class Building:
         return self.building_type
 
     def create_unit(self):
-        pass
-
+        possible_pos = [[1, 0, 0], [0, -1, 0], [0, 0, 0]] if self.pos[2] else [[-1, 0, 1], [0, 1, 1], [0, 0, 1]]
+        unit = {"V": [], "L": [], "H": []}
+        for (x, y, bool) in possible_pos:
+            unit["V"].append([self.pos[0] + x, self.pos[1] + y, bool])
+        return unit
 
 
 

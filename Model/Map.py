@@ -14,6 +14,8 @@ class Map:
         rows = (json_map.splitlines())
         self.height = len(rows)
         self.grid = []
+        self.list_unit = []
+        self.list_building = []
         i = 0
         for row in rows:
             row = row.split(" ")
@@ -28,8 +30,10 @@ class Map:
                 y_dimension.append(z_dimension)
             self.grid.append(y_dimension)
             i += 1
-        self.grid[spawn[1]][spawn[0]][spawn[2]].building = Building((spawn[0], spawn[1], spawn[2]), "S")
+        self.spawn = Building((spawn[0], spawn[1], spawn[2]), "S")
+        self.grid[spawn[1]][spawn[0]][spawn[2]].building = self.spawn
         self.grid[spawn[1]][spawn[0]][spawn[2]].owned = True
+        self.list_building = [self.spawn]
             
     def isValid(self, pos):
         return pos[0]>=0 and pos[0]<self.height and pos[1]>=0 and pos[1]<self.width and self.grid[pos[0]][pos[1]][pos[2]].tiles_type !="A" and self.grid[pos[0]][pos[1]][pos[2]].tiles_type !="R"

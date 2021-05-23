@@ -2,6 +2,7 @@ import requests
 
 from Controller.Turn import Turn
 from Model.Map import Map
+from Model.Unit import Unit
 
 
 class Game:
@@ -17,7 +18,7 @@ class Game:
         self.password = game_info["password"]
         self.map = None
         self.spawn = None
-        self.list_unit = []
+        self.balance = 300
 
     def create_AIgame(self, AItype):
         data = {
@@ -29,8 +30,25 @@ class Game:
     def init(self, json):
         self.spawn = (json["spawn"][0], json["spawn"][1], int(json["spawn"][2]))
         self.map = Map(json["map"], self.spawn)
+        print(json)
 
     def analyse(self, data):
+        for moved in data["moved"]:
+            pass
+        for attacked in data["attacked"]:
+            pass
+        for mined in data["mined"]:
+            pass
+        for summoned in data["summoned"]:
+            if summoned[2]:
+                self.map.list_unit.append(Unit(summoned[0], summoned[1]))
+        for killed in data["killed"]:
+            pass
+        self.balance = data["balance"]
+        self.show_analyse(data)
+
+
+    def show_analyse(self, data):
         print()
         print()
         print("-----------------------------------")
@@ -39,7 +57,6 @@ class Game:
         print("-----------------------------------")
         print()
         print()
-        pass
 
     def list_game(self):
         r = requests.get(self.url + "current", cookies=self.cookie)
@@ -54,12 +71,15 @@ class Game:
         turn = Turn()
 
         """ Unit movement, attack, build and dig"""
-        for unit in self.list_unit:
-            unit.move()
-            unit.attack()
+        for unit in self.map.list_unit:
+            turn.move(unit.pos, unit.move())
+            unit.action_attack()
             unit.build()
             unit.dig()
 
-        for building in self.list_building:
-            building.create_unit()
-
+        for building in self.map.list_building:
+            new_unit = building.create_unit()
+            for i in new_unit:
+                for pos in new_unit[i]:
+                    turn.summon(pos, i)
+        return turn

@@ -1,3 +1,6 @@
+import random
+
+
 class Unit:
 
     def __init__(self, pos, unit_type):
@@ -38,9 +41,19 @@ class Unit:
         return self.unit_type
 
     def move(self):
-        pass
+        i = self.movement
+        possible_move = [[1,0,0], [0,-1,0], [0,0,0]] if self.pos[2] else [[-1,0,1],[0,1,1],[0,0,1]]
+        moves = []
+        last_pos = self.pos
+        while i != 0:
+            choice = random.choice(possible_move)
+            pos = [last_pos[0] + choice[0], last_pos[1] + choice[1], choice[2]]
+            moves.append(pos)
+            last_pos = pos
+            i -= 1
+        return moves
 
-    def attack(self):
+    def action_attack(self):
         pass
 
     def build(self):

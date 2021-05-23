@@ -14,7 +14,7 @@ class Turn:
         self.builds = {}
         self.summons = {}
 
-    def move(self, pos, *dests):
+    def move(self, pos, dests):
         self.moves[pos_to_str(pos)] = [[dest[0], dest[1], bool(dest[2])] for dest in dests]
 
     def attack(self, pos, *dests):
