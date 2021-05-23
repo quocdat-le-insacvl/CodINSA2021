@@ -33,7 +33,7 @@ def find_nearby_enemy(grid, pos):
         for row in line:
             for case in row:
                 if case.unit is not None and not case.unit.isOwned and case.pos in near_pos:
-                    res.append(pos)
+                    res.append(case.pos)
     return res
 
 

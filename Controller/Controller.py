@@ -12,22 +12,24 @@ from View.Visualization import Visualization
 
 class Controller:
 
-    def __init__(self):
+    def __init__(self, nogui, user, password, multiplayer, code, game_id):
         # self.ai_mode = "InactiveAI"
         # self.ai_mode = "LabyrinthAI"
         self.ai_mode = "StaticAI"
         self.url = "http://codinsa.insa-rennes.fr/"
         self.host = "codinsa.insa-rennes.fr"
-        self.cookie = self.login()
-        self.game = Game(self.url, self.cookie, self.ai_mode)
+        self.cookie = self.login(user, password)
+        self.game = Game(self.url, self.cookie, self.ai_mode, multiplayer, code, game_id)
         self.view = View()
-        self.visualization = Visualization(self.game)
+        self.nogui = nogui
+        if not self.nogui:
+            self.visualization = Visualization(self.game)
         self.run()
 
-    def login(self):
+    def login(self, user, password):
         data = {
-            "username": "CVL3",
-            "password": ".WCX6_KO9<PVh-F9V@PmNlL?"
+            "username": user,
+            "password": password
         }
         # data = {
             # "username": "CVL1",
@@ -44,18 +46,19 @@ class Controller:
             sock.connect((self.host, self.game.port))
             flag = True
             while flag:
-                data = sock.recv(1024)
+                data = sock.recv(4096)
                 while len(data) > 0 and data[-1] != 10:
-                    data += sock.recv(1024)
+                    data += sock.recv(4096)
 
                 if len(data) == 0 or data is not None:
-                    try:
-                        data = json.loads(data.decode("UTF-8"))
-                    except Exception as E:
-                        print(data)
-                        print(str(E))
-                        print("On a perdu!")
-                        # break
+                    for data in data.decode("UTF-8").split("\n")[0:-1]:
+                        try:
+                            data = json.loads(data)
+                        except Exception as E:
+                            print(data)
+                            print(str(E))
+                            print("On a perdu!")
+                            # break
 
 
                     """ Début du jeu """
@@ -81,6 +84,6 @@ class Controller:
                         else:
                             print(data)
                             flag = False
-
-                    self.visualization.draw()
+                    if not self.nogui:
+                        self.visualization.draw()
         self.game.leave_game()
