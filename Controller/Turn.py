@@ -16,7 +16,6 @@ class Turn:
 
     def move(self, pos, dests):
         self.moves[pos_to_str(pos)] = [[dest[0], dest[1], bool(dest[2])] for dest in dests]
-        print("DEBUG", self.moves)
 
     def attack(self, pos, *dests):
         self.attacks[pos_to_str(pos)] = [[dest[0], dest[1], bool(dest[2])] for dest in dests]

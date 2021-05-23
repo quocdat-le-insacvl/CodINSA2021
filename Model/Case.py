@@ -14,6 +14,7 @@ class Case:
         self.building = Building(pos, s[1]) if len(s) != 1 and s[1] in ["C", "S", "T", "W"] else None
         self.unit = Unit(pos, s[1], game) if len(s) != 1 and s[1] in ["L", "V", "H"] else None
         self.life_point = s[2] if len(s) != 1 else ""
+        self.visible = False
 
         if self.owned is None and len(s) != 1 and s[1] in ["S", "L", "V", "H"]:  # Others spawn or units
             self.owned = False

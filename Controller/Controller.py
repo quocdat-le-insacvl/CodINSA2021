@@ -24,8 +24,8 @@ class Controller:
 
     def login(self):
         data = {
-            "username": "CVL3",
-            "password": ".WCX6_KO9<PVh-F9V@PmNlL?"
+            "username": "CVL1",
+            "password": "+GC;GY8]dK1EYbS=ja*;U"
         }
         r = requests.post(self.url + "init", json=data)
         return r.cookies

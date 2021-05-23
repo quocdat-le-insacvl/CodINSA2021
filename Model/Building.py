@@ -1,6 +1,6 @@
 class Building:
 
-    def __init__(self, pos, building_type):
+    def __init__(self, pos, building_type, owned=True):
         self.pos = pos
         self.building_type = building_type
         if building_type == "S":

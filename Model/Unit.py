@@ -3,10 +3,12 @@ import random
 
 class Unit:
 
-    def __init__(self, pos, unit_type, game):
+    def __init__(self, pos, unit_type, game, owned=True):
         self.game = game
         self.pos = pos
         self.unit_type = unit_type
+        if owned:
+            self.game.map.list_unit.append(self)
         if unit_type == "V":
             self.price = 20
             self.life = 20
