@@ -45,7 +45,7 @@ class Game:
             pass
         for summoned in data["summoned"]:
             if summoned[2]:
-                unit = Unit(summoned[0], summoned[1])
+                unit = Unit(summoned[0], summoned[1], True)
                 self.map.list_unit.append(unit)
                 self.map.grid[summoned[0][1]][summoned[0][0]][int(summoned[0][2])].unit = unit
         for killed in data["killed"]:
@@ -79,7 +79,7 @@ class Game:
         """ Unit movement, attack, build and dig"""
         for unit in self.map.list_unit:
             turn.move(unit.pos, unit.move(self.map.grid))
-            unit.action_attack()
+            turn.attack(unit.pos, unit.action_attack(self.map.grid))
             unit.build()
             unit.dig()
 
