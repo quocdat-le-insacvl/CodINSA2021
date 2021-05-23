@@ -77,6 +77,17 @@ class Game:
 
 
     def analyse(self, data):
+        try:
+            for killed in data["killed"]:
+                pos = json.loads(killed)
+                for unit in self.map.list_unit:
+                    if pos == unit.pos:
+                        self.map.list_unit.remove(unit)
+                        break
+        except Exception as E:
+            print(str(E)) 
+            print("Error killed/function ")
+
         for moved in data["moved"]:
             if moved[2]:
                 dep = moved[0]
@@ -95,8 +106,7 @@ class Game:
                 self.map.list_unit.append(unit)
                 # self.map.list_unit[unit] = summoned[0]
                 self.map.grid[summoned[0][1]][summoned[0][0]][int(summoned[0][2])].unit = unit
-        for killed in data["killed"]:
-            pass
+
 
         for line in self.map.grid:
             for row in line:
