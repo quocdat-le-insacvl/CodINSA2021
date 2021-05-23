@@ -194,6 +194,7 @@ class Game:
                 if self.map.isValid(pos) and self.map.pathFinder(tuple(unit.pos), pos) is not None:
                     if self.map.grid[pos[1]][pos[0]][pos[2]].unit is None or self.map.grid[pos[1]][pos[0]][pos[2]].unit is not None and not self.map.grid[pos[1]][pos[0]][pos[2]].unit.isOwned:
                         posToAttack = pos
+                        break
 
             #Calcule le déplacement pur aller vers cette position
             list_Path = None
