@@ -43,7 +43,7 @@ class Controller:
                 while len(data) > 0 and data[-1] != 10:
                     data += sock.recv(1024)
 
-                if data is not None or data != b'':
+                if len(data) == 0 or data is not None:
                     try:
                         data = json.loads(data.decode("UTF-8"))
                     except Exception as E:
