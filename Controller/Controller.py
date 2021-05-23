@@ -4,8 +4,8 @@ import socket
 import requests
 
 from Model.Game import Game
-from Model.Unit import Unit
 from View.View import View
+
 from View.Visualization import Visualization
 
 

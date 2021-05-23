@@ -1,5 +1,4 @@
 import pygame as pg
-import sys
 
 # define some colors (R, G, B)
 WHITE = (255, 255, 255)
@@ -22,6 +21,7 @@ TITLE = "Visualization"
 BGCOLOR = DARKGREY
 
 class Visualization:
+
     def __init__(self, game):
         pg.init()
         self.screen = pg.display.set_mode((WIDTH, HEIGHT))

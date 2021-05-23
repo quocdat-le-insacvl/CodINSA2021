@@ -1,15 +1,14 @@
 import json
 
 import requests
-from Controller.Danger import Danger
-import random
 
+from Controller.Danger import Danger
 from Controller.Turn import Turn
+from Controller.Util import adjPos
+from Controller.Util import find_enemy_spawn, find_nearby_enemy, pos_to_str
+from Model.Building import Building
 from Model.Map import Map
 from Model.Unit import Unit
-from Model.Building import Building
-from Controller.Util import find_enemy_spawn, find_nearby_enemy, pos_to_str
-from Controller.Util import adjPos
 
 
 class Game:

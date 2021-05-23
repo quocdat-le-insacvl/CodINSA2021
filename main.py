@@ -1,21 +1,13 @@
 from Controller.Controller import Controller
-
-# Tuiles
-Abyss = 'A'
-Field = 'F'
-Mountain = 'M'
-Ressource = 'R'
-
-# Bâtiments :
-Camp = 'C'
-Spawn = 'S'
-Turret = 'T'
-Wall = 'W'
-
-# Unités :
-Scout = 'L'  # L for Light
-Villager = 'V'
-Tank = 'H'  # H for Heavy
+import argparse
 
 if __name__ == "__main__":
-    app = Controller(False, "CVL3", ".WCX6_KO9<PVh-F9V@PmNlL?", False, None, None)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("gui", type=int)
+    parser.add_argument("username", type=str)
+    parser.add_argument("password", type=str)
+    parser.add_argument("multiplayer", type=int)
+    parser.add_argument("secretkey", type=str)
+    parser.add_argument("room_id", type=str)
+    args = parser.parse_args()
+    app = Controller(bool(args.gui), args.username, args.password, bool(args.multiplayer), args.secretkey, args.room_id if args.room_id != "" else None)
