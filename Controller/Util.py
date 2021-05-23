@@ -69,3 +69,24 @@ def adjPos(pos):
         list.append((pos[0], pos[1] + 1, 1))
         list.append((pos[0], pos[1], 1))
     return list
+
+
+def get_tile_around(grid, pos, type):
+    list = []
+    i_max = len(grid)
+    j_max = len(grid[0])
+    if pos[2]:
+        if 0 <= pos[1] < i_max and 0 <= pos[0] + 1 < j_max and grid[pos[1]][pos[0] + 1][0].tiles_type == type:
+            list.append((pos[0] + 1, pos[1], 0))
+        if 0 <= pos[1] - 1 < i_max and 0 <= pos[0] < j_max and grid[pos[1] - 1][pos[0]][0].tiles_type == type:
+            list.append((pos[0], pos[1] - 1, 0))
+        if 0 <= pos[1] < i_max and 0 <= pos[0] < j_max and grid[pos[1]][pos[0]][0].tiles_type == type:
+            list.append((pos[0], pos[1], 0))
+    else:
+        if 0 <= pos[1] < i_max and 0 <= pos[0] - 1 < j_max and grid[pos[1]][pos[0] - 1][1].tiles_type == type:
+            list.append((pos[0] - 1, pos[1], 1))
+        if 0 <= pos[1] + 1 < i_max and 0 <= pos[0] < j_max and grid[pos[1] + 1][pos[0]][1].tiles_type == type:
+            list.append((pos[0], pos[1] + 1, 1))
+        if 0 <= pos[1] < i_max and 0 <= pos[0] < j_max and grid[pos[1]][pos[0]][1].tiles_type == type:
+            list.append((pos[0], pos[1], 1))
+    return list
