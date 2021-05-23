@@ -40,6 +40,7 @@ class Map:
         self.grid[spawn[1]][spawn[0]][spawn[2]].building = self.spawn
         self.grid[spawn[1]][spawn[0]][spawn[2]].owned = True
         self.list_building = [self.spawn]
+        self.list_unit = []
             
     def isValid(self, pos):
         if pos[1]>=0 and pos[1]<self.height and pos[0]>=0 and pos[0]<self.width and self.grid[pos[1]][pos[0]][pos[2]].tiles_type not in ["A", "R"]:    
