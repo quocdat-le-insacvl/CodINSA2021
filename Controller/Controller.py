@@ -4,17 +4,17 @@ import socket
 import requests
 
 from Model.Game import Game
-from Model.Unit import Unit
 from View.View import View
+
 from View.Visualization import Visualization
 
 
 class Controller:
 
     def __init__(self, nogui, user, password, multiplayer, code, game_id):
-        self.ai_mode = "InactiveAI"
+        # self.ai_mode = "InactiveAI"
         # self.ai_mode = "LabyrinthAI"
-        # self.ai_mode = "StaticAI"
+        self.ai_mode = "RessourceAI"
         self.url = "http://codinsa.insa-rennes.fr/"
         self.host = "codinsa.insa-rennes.fr"
         self.cookie = self.login(user, password)
